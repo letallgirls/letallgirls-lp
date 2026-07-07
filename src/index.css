@@ -1,0 +1,54 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-body: 'Poppins', sans-serif;
+  --font-heading: 'Montserrat', sans-serif;
+
+  /* color-scheme-1: default page background */
+  --color-scheme1-bg: #fff4f4;
+  --color-scheme1-fg: #2850aa;
+  --color-scheme1-button: #9b046f;
+  --color-scheme1-button-text: #fdfbf7;
+  --color-scheme1-secondary: #fff4f4;
+  --color-scheme1-secondary-text: #272727;
+
+  /* blue-coral scheme: header bar, donate hero, newsletter */
+  --color-blue-bg: #2850aa;
+  --color-blue-fg: #ffffff;
+  --color-blue-button: #ff9fe5;
+  --color-blue-button-text: #2850aa;
+
+  /* dark scheme: partners banner card */
+  --color-dark-bg: #2e2a39;
+  --color-dark-fg: #fdfbf7;
+  --color-dark-button: #fdfbf7;
+  --color-dark-button-text: #2e2a39;
+
+  --ease-out-slow: cubic-bezier(0, 0, 0.3, 1);
+}
+
+body {
+  font-family: var(--font-body);
+  color: rgba(40, 80, 170, 0.75);
+  background: radial-gradient(#fff1f1 25%, #ffc5c5 100%);
+  background-attachment: fixed;
+  letter-spacing: 0.06rem;
+  line-height: 1.8;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+}
+
+.bg-gradient-blue {
+  background: radial-gradient(#2850aa, #ff858d 100%);
+  background-attachment: fixed;
+}
+
+.bg-gradient-scheme1 {
+  background: radial-gradient(#fff1f1 25%, #ffc5c5 100%);
+  background-attachment: fixed;
+}
