@@ -24,7 +24,7 @@ export function DidiExplainer() {
         <h2 className="text-20 md:text-25 text-night mb-2">What is D.I.D.I.?</h2>
         <p className="text-16 text-night/70 mb-6">
           The Digitally Integrated Daily Instructor turns any room into a fully equipped,
-          AI-powered classroom &mdash; no internet, computer lab, or reliable electricity required.
+          AI-powered classroom. It requires no internet, computer lab, or reliable electricity.
         </p>
         <ul className="flex flex-col gap-3">
           {CAPABILITIES.map((item) => (
