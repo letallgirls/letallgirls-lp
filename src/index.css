@@ -1,54 +1,76 @@
 @import 'tailwindcss';
 
 @theme {
-  --font-body: 'Poppins', sans-serif;
-  --font-heading: 'Montserrat', sans-serif;
+  --font-heading: 'Raleway', sans-serif;
+  --font-body: 'Raleway', sans-serif;
 
-  /* color-scheme-1: default page background */
-  --color-scheme1-bg: #fff4f4;
-  --color-scheme1-fg: #2850aa;
-  --color-scheme1-button: #9b046f;
-  --color-scheme1-button-text: #fdfbf7;
-  --color-scheme1-secondary: #fff4f4;
-  --color-scheme1-secondary-text: #272727;
+  /* Primary palette */
+  --color-brave-light: #e6edf8;
+  --color-brave-neutral: #7b9de1;
+  --color-brave-primary: #3a51aa;
+  --color-brave-extra: #24247e;
+  --color-cloud-light: #fbf8fa;
+  --color-cloud-neutral: #efecef;
+  --color-night: #1f2230;
 
-  /* blue-coral scheme: header bar, donate hero, newsletter */
-  --color-blue-bg: #2850aa;
-  --color-blue-fg: #ffffff;
-  --color-blue-button: #ff9fe5;
-  --color-blue-button-text: #2850aa;
+  /* Secondary/accent palette — sparing use, mainly gradients */
+  --color-blossom-light: #ffd8ed;
+  --color-blossom-accent: #f87fb8;
+  --color-blossom-extra: #c6247b;
+  --color-skyward-light: #d3f8ff;
+  --color-skyward-accent: #8eebfc;
+  --color-harmonica-light: #e4d8ff;
+  --color-harmonica-accent: #b2a4f8;
 
-  /* dark scheme: partners banner card */
-  --color-dark-bg: #2e2a39;
-  --color-dark-fg: #fdfbf7;
-  --color-dark-button: #fdfbf7;
-  --color-dark-button-text: #2e2a39;
+  /* Type scale — major third (5:4) ratio, per brand guidelines */
+  --text-149: 9.3125rem;
+  --text-119: 7.4375rem;
+  --text-95: 5.9375rem;
+  --text-76: 4.75rem;
+  --text-61: 3.8125rem;
+  --text-49: 3.0625rem;
+  --text-39: 2.4375rem;
+  --text-31: 1.9375rem;
+  --text-25: 1.5625rem;
+  --text-20: 1.25rem;
+  --text-16: 1rem;
+  --text-13: 0.8125rem;
 
   --ease-out-slow: cubic-bezier(0, 0, 0.3, 1);
 }
 
 body {
   font-family: var(--font-body);
-  color: rgba(40, 80, 170, 0.75);
-  background: radial-gradient(#fff1f1 25%, #ffc5c5 100%);
-  background-attachment: fixed;
-  letter-spacing: 0.06rem;
-  line-height: 1.8;
+  font-weight: 500; /* Raleway Medium — body copy weight per brand guide */
+  color: var(--color-night);
+  background-color: var(--color-cloud-light);
+  line-height: 1.4; /* body/label line-height rule */
 }
 
 h1,
 h2,
-h3 {
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-heading);
-  font-weight: 700;
+  font-weight: 600; /* Raleway SemiBold — heading/subheading weight */
+  line-height: 1.2; /* heading/subheading line-height rule */
 }
 
-.bg-gradient-blue {
-  background: radial-gradient(#2850aa, #ff858d 100%);
-  background-attachment: fixed;
+/* Raleway Regular, for labels + captions per brand guide */
+.text-label {
+  font-weight: 400;
+  line-height: 1.4;
 }
 
-.bg-gradient-scheme1 {
-  background: radial-gradient(#fff1f1 25%, #ffc5c5 100%);
-  background-attachment: fixed;
+/* Brand gradient with the "medium-high noise, lower opacity" grain the guidelines call for */
+.bg-gradient-brand {
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='0.35' intercept='0.325'/%3E%3CfeFuncG type='linear' slope='0.35' intercept='0.325'/%3E%3CfeFuncB type='linear' slope='0.35' intercept='0.325'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    radial-gradient(var(--color-brave-primary), var(--color-harmonica-accent) 100%);
+  background-blend-mode: overlay;
+  background-attachment: fixed, fixed;
 }
+
+

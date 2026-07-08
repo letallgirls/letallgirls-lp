@@ -1,12 +1,12 @@
 import type { AnchorHTMLAttributes } from 'react'
 
-type Variant = 'primary' | 'secondary' | 'primary-on-blue' | 'primary-on-dark'
+type Variant = 'primary' | 'secondary' | 'on-dark'
 
 const VARIANT_CLASSES: Record<Variant, string> = {
-  primary: 'bg-scheme1-button text-scheme1-button-text',
-  secondary: 'bg-scheme1-secondary text-scheme1-secondary-text',
-  'primary-on-blue': 'bg-blue-button text-blue-button-text',
-  'primary-on-dark': 'bg-dark-button text-dark-button-text',
+  primary: 'bg-brave-primary text-cloud-light',
+  secondary: 'bg-brave-light text-brave-primary',
+  // for use on dark or saturated/gradient surfaces — flips to a light pill for contrast
+  'on-dark': 'bg-cloud-light text-night',
 }
 
 type ButtonProps = AnchorHTMLAttributes<HTMLAnchorElement> & {

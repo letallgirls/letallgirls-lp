@@ -12,10 +12,10 @@ export function Newsletter() {
   }
 
   return (
-    <section className="bg-gradient-blue text-blue-fg">
+    <section className="bg-gradient-brand text-cloud-light">
       <Reveal className="mx-auto max-w-2xl px-4 py-20 text-center">
-        <h2 className="text-2xl md:text-3xl mb-3">Stay Updated</h2>
-        <p className="opacity-90 mb-6">Join our email list to stay in the loop &amp; more.</p>
+        <h2 className="text-16 md:text-25 mb-3">Stay Updated</h2>
+        <p className="text-16 opacity-90 mb-6">Join our email list to stay in the loop &amp; more.</p>
 
         {submitted ? (
           <p className="font-medium">Thanks for subscribing!</p>
@@ -31,12 +31,12 @@ export function Newsletter() {
               placeholder="Email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              className="w-full rounded-[10px] bg-white/15 border border-white/40 pl-5 pr-16 py-4 text-blue-fg placeholder:text-blue-fg/70 focus:outline-none focus:border-white/80 transition-colors"
+              className="w-full rounded-[10px] bg-white/15 border border-white/40 pl-5 pr-16 py-4 text-cloud-light placeholder:text-cloud-light/70 focus:outline-none focus:border-white/80 transition-colors"
             />
             <button
               type="submit"
               aria-label="Subscribe"
-              className="absolute right-0 top-0 h-full w-16 flex items-center justify-center text-blue-fg hover:opacity-70 transition-opacity"
+              className="absolute right-0 top-0 h-full w-16 flex items-center justify-center text-cloud-light hover:opacity-70 transition-opacity"
             >
               <svg width="16" height="12" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path

@@ -30,7 +30,7 @@ function SlideContent({ label, href }: { label: string; href: string | null }) {
   return href ? (
     <a
       href={href}
-      className="font-medium tracking-wide whitespace-nowrap underline decoration-1 underline-offset-4 decoration-blue-fg/50 hover:decoration-blue-fg transition-[text-decoration-color]"
+      className="font-medium tracking-wide whitespace-nowrap underline decoration-1 underline-offset-4 decoration-cloud-light/50 hover:decoration-cloud-light transition-[text-decoration-color]"
     >
       {label}
     </a>
@@ -112,8 +112,8 @@ export function AnnouncementBar() {
   }, [active])
 
   return (
-    <div className="bg-gradient-blue text-blue-fg text-sm overflow-hidden">
-      <div className="mx-auto max-w-[130rem] px-6 md:px-10 lg:px-28 flex items-center justify-between py-2">
+    <div className="bg-gradient-brand text-cloud-light text-sm overflow-hidden">
+      <div className="mx-auto max-w-[90rem] px-6 md:px-10 lg:px-16 flex items-center justify-between py-2">
         <button
           type="button"
           onClick={() => go(-1)}

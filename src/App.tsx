@@ -1,28 +1,23 @@
-import { AnnouncementBar } from './components/layout/AnnouncementBar'
-import { Header } from './components/layout/Header'
-import { Footer } from './components/layout/Footer'
-import { DonateHero } from './components/home/DonateHero'
-import { Mission } from './components/home/Mission'
-import { VideoSection } from './components/home/VideoSection'
-import { ImpactRows } from './components/home/ImpactRows'
-import { PartnersBanner } from './components/home/PartnersBanner'
-import { Newsletter } from './components/home/Newsletter'
+import { Routes, Route } from 'react-router-dom'
+import { Layout } from './components/layout/Layout'
+import { Home } from './pages/Home'
+import { PlaceholderPage } from './pages/PlaceholderPage'
 
 function App() {
   return (
-    <div className="min-h-screen flex flex-col">
-      <AnnouncementBar />
-      <Header />
-      <main className="flex-1">
-        <DonateHero />
-        <Mission />
-        <VideoSection />
-        <ImpactRows />
-        <PartnersBanner />
-      </main>
-      <Newsletter />
-      <Footer />
-    </div>
+    <Routes>
+      <Route element={<Layout />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/our-story" element={<PlaceholderPage title="Our Story" />} />
+        <Route path="/didi" element={<PlaceholderPage title="What We Do" />} />
+        <Route path="/where-we-work" element={<PlaceholderPage title="Where We Work" />} />
+        <Route path="/team" element={<PlaceholderPage title="Team & Board" />} />
+        <Route path="/impact" element={<PlaceholderPage title="Impact" />} />
+        <Route path="/help" element={<PlaceholderPage title="How to Help" />} />
+        <Route path="/contact" element={<PlaceholderPage title="Contact" />} />
+        <Route path="*" element={<PlaceholderPage title="Page Not Found" />} />
+      </Route>
+    </Routes>
   )
 }
 
