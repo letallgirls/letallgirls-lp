@@ -39,7 +39,7 @@ export function GradientCta() {
               </a>
             </div>
             <p className="mt-6 text-13 text-label text-night/50 font-medium">
-              Tax-deductible in the U.S. — 501(c)(3) nonprofit.
+              Tax-deductible in the U.S. as a 501(c)(3) nonprofit.
             </p>
           </motion.div>
         </div>

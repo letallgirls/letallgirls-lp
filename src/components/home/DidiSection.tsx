@@ -67,16 +67,22 @@ export function DidiSection() {
             How it works, in three steps.
           </h3>
         </Reveal>
-        <div className="grid md:grid-cols-3 gap-8 relative">
+        <div className="relative grid md:grid-cols-3 gap-8 md:gap-12 mt-4">
           {steps.map((step, i) => (
-            <Reveal key={step.step} delay={i * 0.12}>
-              <div className="relative pl-6 border-l-2 border-brave-primary/20 h-full">
-                <span className="absolute -left-[7px] top-0 size-3 rounded-full bg-brave-primary" />
-                <span className="text-13 text-label font-semibold text-brave-primary uppercase tracking-widest">
+            <Reveal key={step.step} delay={i * 0.12} className="relative">
+              <div className="relative pl-6 md:pl-0 md:pt-8 border-l-2 md:border-l-0 border-brave-primary/20 h-full md:text-center">
+                {/* Connecting horizontal line to next step (desktop only) */}
+                {i !== steps.length - 1 && (
+                  <div className="hidden md:block absolute top-[5px] left-1/2 w-[calc(100%+3rem)] h-[2px] bg-brave-primary/20" />
+                )}
+                {/* Dot */}
+                <span className="absolute -left-[7px] top-0 md:left-1/2 md:-translate-x-1/2 md:-top-[1px] size-3 rounded-full bg-brave-primary z-10" />
+                
+                <span className="inline-block mt-[-2px] md:mt-0 text-13 text-label font-semibold text-brave-primary uppercase tracking-widest">
                   Step {step.step}
                 </span>
-                <h4 className="text-20 font-semibold mt-3 mb-3">{step.title}</h4>
-                <p className="text-night/60 font-medium leading-[1.4]">{step.body}</p>
+                <h4 className="text-20 font-semibold mt-2 md:mt-3 mb-2 md:mb-3">{step.title}</h4>
+                <p className="text-night/60 font-medium leading-[1.4] md:mx-auto md:max-w-xs">{step.body}</p>
               </div>
             </Reveal>
           ))}

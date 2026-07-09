@@ -23,7 +23,7 @@ const icon = (path: ReactNode) => (
 const ways: Way[] = [
   {
     title: 'Donate',
-    body: 'General gifts go toward whatever LetAllGirls needs most — manufacturing, shipping, R&D, or field support.',
+    body: 'General gifts go toward whatever LetAllGirls needs most, including manufacturing, shipping, R&D, or field support.',
     cta: 'Donate now',
     href: GOFUNDME_URL,
     external: true,
@@ -31,7 +31,7 @@ const ways: Way[] = [
   },
   {
     title: 'Sponsor a Device',
-    body: '$25/month supports one DIDI device serving upwards of 500 students — a tangible, recurring way to see exactly what you power.',
+    body: '$25/month supports one DIDI device serving upwards of 500 students. This is a tangible, recurring way to see exactly what you power.',
     cta: 'Sponsor now',
     href: GOFUNDME_URL,
     external: true,
@@ -47,7 +47,7 @@ const ways: Way[] = [
   },
   {
     title: 'Corporate Sponsor',
-    body: 'Fund DIDI deployments starting at $1,000+, deployed under your name at the schools you help reach — real devices, real students.',
+    body: 'Fund DIDI deployments starting at $1,000+, deployed under your name at the schools you help reach with real devices for real students.',
     cta: 'Get in touch',
     href: '/contact',
     icon: icon(<><path strokeLinejoin="round" d="M4 21V6l8-3 8 3v15" /><path strokeLinecap="round" d="M9 21v-5h6v5M9 9h.01M15 9h.01M9 13h.01M15 13h.01" /></>),
@@ -94,13 +94,6 @@ export function WaysToHelp() {
               real device in a real classroom.
             </p>
           </div>
-          <a
-            href={GOFUNDME_URL}
-            {...EXTERNAL_LINK_PROPS}
-            className="shrink-0 inline-flex items-center gap-2 rounded-full bg-brave-primary text-cloud-light px-7 py-3 text-13 font-semibold hover:bg-brave-extra transition-colors"
-          >
-            Donate now
-          </a>
         </Reveal>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">

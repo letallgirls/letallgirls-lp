@@ -4,7 +4,7 @@ import logo from '../../assets/images/logo-blu.png'
 import { NAV_GROUPS, HOW_TO_HELP_LINK, DIDI_LINK } from '../../constants/nav'
 import { NavDropdown } from './NavDropdown'
 
-const NAV_LINK_CLASS = 'text-night/80 hover:text-brave-primary font-medium text-sm transition-colors'
+const NAV_LINK_CLASS = 'text-night/80 hover:text-brave-primary font-medium text-base transition-colors'
 
 function HamburgerIcon() {
   return (
@@ -44,7 +44,7 @@ export function Header() {
             href="https://gofund.me/5663872b"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full border border-dashed border-night/40 px-5 py-2 text-sm font-medium text-night hover:border-brave-primary hover:text-brave-primary transition-colors"
+            className="inline-flex items-center gap-2 rounded-full border border-dashed border-night/40 px-5 py-2 text-base font-medium text-night hover:border-brave-primary hover:text-brave-primary transition-colors"
           >
             Donate
           </a>

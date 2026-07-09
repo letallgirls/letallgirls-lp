@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
-import heroPhoto from '../../assets/images/impact-students.jpg'
+import heroPhoto from '../../assets/images/WhatsApp_Image_2024-11-12_at_10.55.53_AM_1.jpg'
 
 /* ------------------------------------------------------------------ */
 /*  Inline glyph                                                       */
@@ -33,8 +33,7 @@ function EduGlyph() {
   )
 }
 
-const CAPTION =
-  'Every gift — a dollar, a device, or a partnership — reaches a real classroom.'
+const CAPTION = 'Every gift, whether it is a dollar, a device, or a partnership, reaches a real classroom.'
 
 /* ------------------------------------------------------------------ */
 /*  clip-path notch system                                             */
@@ -237,7 +236,7 @@ export function HelpHero() {
             <img
               src={heroPhoto}
               alt="Students learning together on a tablet connected to DIDI"
-              className="w-full h-56 md:h-[24rem] object-cover object-[center_35%]"
+              className="w-full h-64 md:h-[28rem] object-cover object-[center_75%]"
               fetchPriority="high"
             />
           </motion.div>

@@ -44,7 +44,7 @@ export function NavDropdown({ label, items }: { label: string; items: DropdownIt
     <div ref={ref} className="relative">
       <button
         type="button"
-        className="flex items-center gap-1.5 text-night/80 hover:text-brave-primary font-medium text-sm transition-colors"
+        className="flex items-center gap-1.5 text-night/80 hover:text-brave-primary font-medium text-base transition-colors"
         aria-haspopup="true"
         aria-expanded={open}
         onClick={() => setOpen((o) => !o)}
@@ -63,7 +63,7 @@ export function NavDropdown({ label, items }: { label: string; items: DropdownIt
             key={item.label}
             to={item.href}
             onClick={() => setOpen(false)}
-            className="block rounded-xl px-4 py-2.5 text-sm text-night/80 hover:bg-cloud-neutral hover:text-brave-primary transition-colors"
+            className="block rounded-xl px-4 py-2.5 text-base text-night/80 hover:bg-cloud-neutral hover:text-brave-primary transition-colors"
           >
             {item.label}
           </Link>

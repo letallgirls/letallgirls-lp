@@ -4,7 +4,7 @@ const model = [
   {
     value: '$200',
     label: 'Shipping & deployment',
-    body: 'A one-time fee per DIDI unit — often waived — that covers getting a device on the ground.',
+    body: 'A one-time fee per DIDI unit that covers getting a device on the ground. This is often waived.',
   },
   {
     value: '$25',
