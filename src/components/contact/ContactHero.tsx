@@ -3,8 +3,11 @@ import { motion } from 'framer-motion'
 export function ContactHero() {
   return (
     <section className="relative pt-20 pb-16 px-6 overflow-hidden">
-      <div className="absolute -top-32 -right-40 size-96 bg-skyward-accent/40 blur-3xl rounded-full animate-float-slow" />
-      <div className="absolute -bottom-40 -left-32 size-96 bg-blossom-accent/30 blur-3xl rounded-full animate-float-slow [animation-delay:2s]" />
+      {/* Background gradients with a mask that fades out at the bottom so it seamlessly blends into the next section */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none [mask-image:linear-gradient(to_bottom,black_50%,transparent_100%)]">
+        <div className="absolute -top-32 -right-40 size-96 bg-skyward-accent/40 blur-3xl rounded-full animate-float-slow" />
+        <div className="absolute -bottom-40 -left-32 size-96 bg-blossom-accent/30 blur-3xl rounded-full animate-float-slow [animation-delay:2s]" />
+      </div>
       <div className="relative max-w-5xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
