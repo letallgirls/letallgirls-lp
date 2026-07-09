@@ -56,12 +56,23 @@ function buildNotchPath(
   r: number, // notch corner radius (px)
   tr?: { w: number; h: number },
   bl?: { w: number; h: number },
+  tl?: { w: number; h: number },
 ): string {
   const d: string[] = []
 
-  /* ---- top-left corner ---- */
-  d.push(`M 0 ${f(cr)}`)
-  d.push(`A ${f(cr)} ${f(cr)} 0 0 1 ${f(cr)} 0`)
+  if (tl) {
+    /* ---- TL notch: start on left edge below the notch ---- */
+    d.push(`M 0 ${f(tl.h + r)}`)
+    d.push(`A ${f(r)} ${f(r)} 0 0 1 ${f(r)} ${f(tl.h)}`) // outer convex
+    d.push(`L ${f(tl.w - r)} ${f(tl.h)}`) // notch bottom
+    d.push(`A ${f(r)} ${f(r)} 0 0 0 ${f(tl.w)} ${f(tl.h - r)}`) // inner concave
+    d.push(`L ${f(tl.w)} ${f(r)}`) // notch right wall
+    d.push(`A ${f(r)} ${f(r)} 0 0 1 ${f(tl.w + r)} 0`) // outer convex
+  } else {
+    /* ---- normal top-left corner ---- */
+    d.push(`M 0 ${f(cr)}`)
+    d.push(`A ${f(cr)} ${f(cr)} 0 0 1 ${f(cr)} 0`)
+  }
 
   if (tr) {
     /* ---- top edge → TR notch ---- */
@@ -108,10 +119,11 @@ function buildNotchPath(
 function useNotchClip(config: {
   tr?: { wRem: number; hRem: number }
   bl?: { wRem: number; hRem: number }
+  tl?: { wRem: number; hRem: number }
   crRem?: number
   rRem?: number
 }) {
-  const { tr, bl, crRem = 2.5, rRem = 1.5 } = config
+  const { tr, bl, tl, crRem = 2.5, rRem = 1.5 } = config
   const ref = useRef<HTMLDivElement>(null)
   const [cp, setCp] = useState<string>()
 
@@ -120,6 +132,8 @@ function useNotchClip(config: {
     trH = tr?.hRem
   const blW = bl?.wRem,
     blH = bl?.hRem
+  const tlW = tl?.wRem,
+    tlH = tl?.hRem
 
   useEffect(() => {
     const el = ref.current
@@ -144,7 +158,11 @@ function useNotchClip(config: {
         blW != null && blH != null
           ? { w: blW * fs, h: blH * fs }
           : undefined
-      setCp(buildNotchPath(W, H, cr, r, trPx, blPx))
+      const tlPx =
+        tlW != null && tlH != null
+          ? { w: tlW * fs, h: tlH * fs }
+          : undefined
+      setCp(buildNotchPath(W, H, cr, r, trPx, blPx, tlPx))
     }
 
     const ro = new ResizeObserver(update)
@@ -154,7 +172,7 @@ function useNotchClip(config: {
       ro.disconnect()
       window.removeEventListener('resize', update)
     }
-  }, [trW, trH, blW, blH, crRem, rRem])
+  }, [trW, trH, blW, blH, tlW, tlH, crRem, rRem])
 
   return { ref, style: cp ? ({ clipPath: cp } as React.CSSProperties) : {} }
 }
@@ -165,7 +183,7 @@ function useNotchClip(config: {
 
 export function HelpHero() {
   const topClip = useNotchClip({
-    tr: { wRem: 15, hRem: 5 },
+    tl: { wRem: 15, hRem: 5 },
   })
 
   const bottomClip = useNotchClip({
@@ -176,26 +194,34 @@ export function HelpHero() {
   return (
     <section className="px-4 md:px-6 pt-6 pb-10">
       <div className="max-w-7xl mx-auto">
-        {/* ── Top card ── */}
-        <motion.div
-          ref={topClip.ref}
-          style={topClip.style}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="bg-brave-extra text-cloud-light rounded-[1.75rem] md:rounded-[2.5rem] px-6 md:px-12 py-10 md:py-14"
-        >
-          <div className="md:pr-[16rem]">
-            <p className="text-13 text-label font-semibold uppercase tracking-[0.25em] text-cloud-light/70">
+        <div className="relative">
+          {/* "HOW TO HELP" label floating in the TL notch blank space */}
+          <div className="hidden md:flex absolute top-0 left-0 w-[15rem] h-[5rem] items-center justify-center">
+            <p className="text-13 text-label font-semibold uppercase tracking-[0.25em] text-night/50">
               How to Help
             </p>
-            <h1 className="mt-4 text-31 md:text-61 font-semibold leading-[1.05] tracking-tight text-cloud-light max-w-4xl">
+          </div>
+
+          <motion.div
+            ref={topClip.ref}
+            style={topClip.style}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="bg-brave-extra text-cloud-light rounded-[1.75rem] md:rounded-[2.5rem] px-6 md:px-12 py-10 md:py-12 md:min-h-[20rem] flex items-end"
+          >
+            {/* Mobile-only label (inside the card since there's no notch on mobile) */}
+            <p className="md:hidden text-13 text-label font-semibold uppercase tracking-[0.25em] text-cloud-light/70 mb-4">
+              How to Help
+            </p>
+            <h1 className="mt-0 text-31 md:text-49 font-semibold leading-[1.05] tracking-tight text-cloud-light max-w-3xl">
               Turn your support <EduGlyph />{' '}
               <br className="hidden md:block" />
               into a real classroom.
             </h1>
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
+
 
         {/* ── Bottom card ── */}
         <div className="relative mt-4 md:mt-5">
