@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import logo from '../../assets/images/logo-blu.png'
-import { NAV_GROUPS, HOW_TO_HELP_LINK } from '../../constants/nav'
+import { NAV_GROUPS, HOW_TO_HELP_LINK, DIDI_LINK } from '../../constants/nav'
 import { NavDropdown } from './NavDropdown'
 
 const NAV_LINK_CLASS = 'text-night/80 hover:text-brave-primary font-medium text-sm transition-colors'
@@ -28,6 +28,9 @@ export function Header() {
         </Link>
 
         <div className="hidden md:flex items-center gap-8">
+          <Link to={DIDI_LINK.href} className={NAV_LINK_CLASS}>
+            {DIDI_LINK.label}
+          </Link>
           {NAV_GROUPS.map((group) => (
             <NavDropdown key={group.label} label={group.label} items={group.items} />
           ))}
@@ -39,6 +42,8 @@ export function Header() {
         <div className="flex items-center gap-3">
           <a
             href="https://gofund.me/5663872b"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 rounded-full border border-dashed border-night/40 px-5 py-2 text-sm font-medium text-night hover:border-brave-primary hover:text-brave-primary transition-colors"
           >
             Donate
@@ -57,6 +62,13 @@ export function Header() {
 
       {menuOpen && (
         <div className="md:hidden border-t border-night/10 bg-cloud-neutral px-6 py-4 flex flex-col gap-5">
+          <Link
+            to={DIDI_LINK.href}
+            className={NAV_LINK_CLASS}
+            onClick={() => setMenuOpen(false)}
+          >
+            {DIDI_LINK.label}
+          </Link>
           {NAV_GROUPS.map((group) => (
             <div key={group.label}>
               <p className="text-xs font-semibold uppercase tracking-wide text-night/50 mb-2">

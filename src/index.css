@@ -39,12 +39,28 @@
   --ease-out-slow: cubic-bezier(0, 0, 0.3, 1);
 }
 
+/* Root size trimmed from the 16px default so the whole rem-based type scale
+   (and spacing) sits a touch smaller/tighter. Easy dial to revert. */
+html {
+  font-size: 15px;
+}
+
 body {
   font-family: var(--font-body);
   font-weight: 500; /* Raleway Medium — body copy weight per brand guide */
   color: var(--color-night);
   background-color: var(--color-cloud-light);
   line-height: 1.4; /* body/label line-height rule */
+
+  /* A restrained take on the Lovable draft's pink wash: a soft blossom glow
+     concentrated behind the top of the page that fades out as you scroll,
+     rather than an all-over fixed tint. */
+  background-image: radial-gradient(
+    125% 55% at 50% -8%,
+    color-mix(in oklab, var(--color-blossom-light) 55%, transparent) 0%,
+    transparent 60%
+  );
+  background-repeat: no-repeat;
 }
 
 h1,
@@ -71,6 +87,80 @@ h6 {
     radial-gradient(var(--color-brave-primary), var(--color-harmonica-accent) 100%);
   background-blend-mode: overlay;
   background-attachment: fixed, fixed;
+}
+
+/* Pixely brand grain scoped to sit ON images only (per brand guide + stakeholder
+   feedback: the noise should live on photos, not on header/section chrome).
+   Put this on a `position: relative` image container; the grain lays over the
+   image via ::after and inherits the container's rounding. */
+.img-grain {
+  position: relative;
+}
+.img-grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='0.35' intercept='0.325'/%3E%3CfeFuncG type='linear' slope='0.35' intercept='0.325'/%3E%3CfeFuncB type='linear' slope='0.35' intercept='0.325'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+  opacity: 0.55;
+}
+
+/* Klim-style corner cut-outs. These carve a TRANSPARENT rounded notch out of a
+   card (via CSS mask) so the real page background shows through the hole, and
+   the card material curves concavely around it. Size the notch per-use with the
+   --pw / --ph custom properties (e.g. Tailwind `[--pw:20rem] [--ph:7rem]`).
+   md+ only — on mobile the cards stay whole. */
+@media (min-width: 768px) {
+  .cut-tr,
+  .cut-bl {
+    --pw: 16rem;
+    --ph: 6rem;
+    --r: 1.5rem;
+  }
+
+  /* Notch bitten from the TOP-RIGHT corner. */
+  .cut-tr {
+    -webkit-mask:
+      linear-gradient(#000 0 0) left top / calc(100% - var(--pw)) 100% no-repeat,
+      linear-gradient(#000 0 0) left bottom / 100% calc(100% - var(--ph)) no-repeat,
+      radial-gradient(circle var(--r) at 100% 0, #0000 var(--r), #000 calc(var(--r) + 0.5px))
+        right calc(var(--pw) - var(--r)) top calc(var(--ph) - var(--r)) / var(--r) var(--r) no-repeat;
+    mask:
+      linear-gradient(#000 0 0) left top / calc(100% - var(--pw)) 100% no-repeat,
+      linear-gradient(#000 0 0) left bottom / 100% calc(100% - var(--ph)) no-repeat,
+      radial-gradient(circle var(--r) at 100% 0, #0000 var(--r), #000 calc(var(--r) + 0.5px))
+        right calc(var(--pw) - var(--r)) top calc(var(--ph) - var(--r)) / var(--r) var(--r) no-repeat;
+  }
+
+  /* Notch bitten from the BOTTOM-LEFT corner. */
+  .cut-bl {
+    -webkit-mask:
+      linear-gradient(#000 0 0) right top / calc(100% - var(--pw)) 100% no-repeat,
+      linear-gradient(#000 0 0) left top / 100% calc(100% - var(--ph)) no-repeat,
+      radial-gradient(circle var(--r) at 0 100%, #0000 var(--r), #000 calc(var(--r) + 0.5px))
+        left calc(var(--pw) - var(--r)) bottom calc(var(--ph) - var(--r)) / var(--r) var(--r) no-repeat;
+    mask:
+      linear-gradient(#000 0 0) right top / calc(100% - var(--pw)) 100% no-repeat,
+      linear-gradient(#000 0 0) left top / 100% calc(100% - var(--ph)) no-repeat,
+      radial-gradient(circle var(--r) at 0 100%, #0000 var(--r), #000 calc(var(--r) + 0.5px))
+        left calc(var(--pw) - var(--r)) bottom calc(var(--ph) - var(--r)) / var(--r) var(--r) no-repeat;
+  }
+}
+
+/* Floating blurred-orb decoration (ported from the Lovable draft) */
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+.animate-float-slow {
+  animation: float-slow 6s ease-in-out infinite;
 }
 
 
