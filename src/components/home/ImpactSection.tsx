@@ -67,17 +67,14 @@ export function ImpactSection() {
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6 mt-24">
+        <div className="grid md:grid-cols-2 gap-12 md:gap-20 mt-24">
           {testimonials.map((t, i) => (
             <Reveal key={t.author} delay={i * 0.1}>
-              <figure className="p-8 md:p-10 rounded-3xl bg-brave-light border border-brave-primary/10 h-full">
-                <svg className="size-8 text-brave-primary/40 mb-4" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M4 6c2 0 3 1 3 3 0 2-1 3-3 3v2c3 0 5-2 5-5V6H4zm10 0c2 0 3 1 3 3 0 2-1 3-3 3v2c3 0 5-2 5-5V6h-5z" />
-                </svg>
-                <blockquote className="text-20 leading-[1.4] font-medium text-night">
-                  {t.quote}
+              <figure className="pl-6 md:pl-8 border-l-4 border-brave-primary/30 h-full flex flex-col justify-center">
+                <blockquote className="text-20 md:text-23 leading-[1.6] font-medium text-night/80 italic tracking-tight flex-grow">
+                  "{t.quote}"
                 </blockquote>
-                <figcaption className="mt-6 text-13 text-label font-semibold text-brave-primary">
+                <figcaption className="mt-6 text-14 font-semibold text-night/60">
                   — {t.author}
                 </figcaption>
               </figure>
