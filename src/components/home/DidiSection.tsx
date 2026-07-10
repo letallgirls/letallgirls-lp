@@ -1,5 +1,4 @@
-import { motion, useInView } from 'framer-motion'
-import { useRef } from 'react'
+import { motion } from 'framer-motion'
 import { Reveal } from '../ui/Reveal'
 import didiDevice from '../../assets/images/didi-device.png'
 import stepSetup from '../../assets/images/step-setup-tanzania.png'
@@ -210,89 +209,39 @@ export function DidiSection() {
 }
 
 /**
- * The three-step polaroid-card section with a curved SVG connector.
- * Extracted as a sibling component so we can use hooks (useRef / useInView)
- * to animate the SVG path draw-in on scroll.
+ * The three-step section: small tilted polaroid photos on the same level,
+ * with a dot + horizontal dotted line above each step label, text outside below.
  */
 function HowItWorksSteps() {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const isInView = useInView(containerRef, { once: true, margin: '-100px' })
-
-  /*
-   * Desktop SVG curve — a gentle wave spanning all 3 columns.
-   * ViewBox: 0 0 900 120  (wide, shallow).
-   * Card centres sit at roughly x=150, x=450, x=750 (each col centre at 1/6, 3/6, 5/6).
-   * The curve dips down at the middle card and rises at the outer two.
-   */
-  const curvePath = 'M 60 50 C 200 50, 250 90, 450 90 C 650 90, 700 50, 840 50'
-
   return (
     <>
       <Reveal>
-        <h3 className="text-25 md:text-31 font-semibold mb-12 tracking-tight">
+        <h3 className="text-25 md:text-31 font-semibold mb-14 tracking-tight">
           How it works, in three steps.
         </h3>
       </Reveal>
 
-      <div ref={containerRef} className="relative mt-4">
-        {/* ── Desktop curved connector SVG (hidden on mobile) ── */}
-        <svg
-          viewBox="0 0 900 120"
-          fill="none"
-          preserveAspectRatio="none"
-          className="pointer-events-none absolute inset-x-0 top-[55%] hidden md:block h-24 w-full z-0"
-          aria-hidden
-        >
-          {/* The wave */}
-          <motion.path
-            d={curvePath}
-            stroke="#3a51aa"
-            strokeWidth={2}
-            strokeOpacity={0.22}
-            strokeDasharray="8 6"
-            fill="none"
-            vectorEffect="non-scaling-stroke"
-            initial={{ pathLength: 0, opacity: 0 }}
-            animate={isInView ? { pathLength: 1, opacity: 1 } : {}}
-            transition={{ duration: 1.2, ease: 'easeOut', delay: 0.3 }}
-          />
-          {/* Dots where the curve meets each card */}
-          {[60, 450, 840].map((cx, i) => (
-            <motion.circle
-              key={cx}
-              cx={cx}
-              cy={i === 1 ? 90 : 50}
-              r={5}
-              fill="#3a51aa"
-              fillOpacity={0.35}
-              initial={{ scale: 0, opacity: 0 }}
-              animate={isInView ? { scale: 1, opacity: 1 } : {}}
-              transition={{ duration: 0.4, delay: 0.6 + i * 0.2, ease: 'backOut' }}
-            />
-          ))}
-        </svg>
-
+      <div className="relative mt-4">
         {/* ── Cards grid ── */}
-        <div className="grid md:grid-cols-3 gap-8 md:gap-10">
+        <div className="grid md:grid-cols-3 gap-12 md:gap-8">
           {steps.map((step, i) => (
-            <Reveal key={step.step} delay={i * 0.14}>
-              {/* Wrapper — centres card on mobile, adds wave-riding offset on md */}
-              <div className="group relative z-10 flex justify-center">
+            <Reveal key={step.step} delay={i * 0.16}>
+              <div className="group relative z-10 flex flex-col items-center">
+                {/* Small polaroid photo card */}
                 <motion.div
-                  className={`relative w-full max-w-[17rem] md:max-w-none ${i === 1 ? 'md:mt-8' : ''}`}
+                  className="relative w-36 md:w-40 cursor-pointer"
                   initial={{ rotate: 0 }}
                   whileInView={{ rotate: step.rotation }}
-                  whileHover={{ rotate: 0, scale: 1.03 }}
+                  whileHover={{ rotate: 0, scale: 1.08 }}
                   viewport={{ once: true, margin: '-60px' }}
-                  transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+                  transition={{ type: 'spring', stiffness: 220, damping: 18 }}
                 >
-                  {/* Polaroid frame */}
-                  <div className="rounded-sm bg-cloud-light shadow-[0_4px_24px_rgba(31,34,48,0.10),0_1.5px_6px_rgba(31,34,48,0.06)] overflow-hidden">
+                  <div className="rounded-[3px] bg-cloud-light p-1.5 pb-4 shadow-[0_3px_16px_rgba(31,34,48,0.12),0_1px_4px_rgba(31,34,48,0.06)]">
                     {/* Pin / tape accent */}
-                    <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 z-20 w-10 h-5 rounded-b-md bg-blossom-accent/70 shadow-sm" />
+                    <div className="absolute -top-2 left-1/2 -translate-x-1/2 z-20 w-8 h-4 rounded-b-md bg-blossom-accent/65 shadow-sm" />
 
                     {/* Photo */}
-                    <div className="img-grain aspect-[4/3] overflow-hidden">
+                    <div className="img-grain aspect-[4/5] overflow-hidden rounded-[2px]">
                       <img
                         src={step.image}
                         alt={step.title}
@@ -300,21 +249,41 @@ function HowItWorksSteps() {
                         loading="lazy"
                       />
                     </div>
-
-                    {/* Polaroid chin — caption area */}
-                    <div className="px-4 pt-4 pb-5">
-                      <span className="text-13 text-label font-semibold text-brave-primary/60 tracking-widest uppercase">
-                        {step.step}
-                      </span>
-                      <h4 className="text-16 md:text-20 font-semibold mt-1.5 leading-tight tracking-tight">
-                        {step.title}
-                      </h4>
-                      <p className="text-13 text-night/55 font-medium leading-[1.4] mt-1.5">
-                        {step.body}
-                      </p>
-                    </div>
                   </div>
                 </motion.div>
+
+                {/* ── Dot + connecting dotted line ── */}
+                <div className="relative w-full flex justify-center mt-5">
+                  {/* Horizontal dotted line — spans full column width, hidden on mobile */}
+                  <div className="hidden md:block absolute top-1/2 -translate-y-1/2 left-0 right-0 h-px border-t-2 border-dotted border-brave-primary/20" />
+                  {/* Extend line to neighbouring columns */}
+                  {i === 0 && (
+                    <div className="hidden md:block absolute top-1/2 -translate-y-1/2 left-1/2 -right-[calc(50%+1rem)] h-px border-t-2 border-dotted border-brave-primary/20" style={{ right: 'calc(-50% - 1rem)' }} />
+                  )}
+                  {i === 1 && (
+                    <>
+                      <div className="hidden md:block absolute top-1/2 -translate-y-1/2 h-px border-t-2 border-dotted border-brave-primary/20" style={{ left: 'calc(-50% - 1rem)', right: 'calc(-50% - 1rem)' }} />
+                    </>
+                  )}
+                  {i === 2 && (
+                    <div className="hidden md:block absolute top-1/2 -translate-y-1/2 right-1/2 h-px border-t-2 border-dotted border-brave-primary/20" style={{ left: 'calc(-50% - 1rem)' }} />
+                  )}
+                  {/* The dot */}
+                  <span className="relative z-10 size-3 rounded-full bg-brave-primary shadow-sm" />
+                </div>
+
+                {/* Text below */}
+                <div className="text-center mt-4 max-w-[16rem]">
+                  <span className="text-13 text-label font-semibold text-brave-primary/60 tracking-widest uppercase">
+                    Step {step.step}
+                  </span>
+                  <h4 className="text-16 md:text-20 font-semibold mt-1 leading-tight tracking-tight">
+                    {step.title}
+                  </h4>
+                  <p className="text-13 text-night/55 font-medium leading-[1.4] mt-1.5">
+                    {step.body}
+                  </p>
+                </div>
               </div>
             </Reveal>
           ))}
