@@ -149,6 +149,54 @@ h6 {
   }
 }
 
+/* Emanating ripple for the DIDI callout markers (broadcasting signal). */
+@keyframes marker-pulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  70% {
+    opacity: 0;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+.animate-marker-pulse {
+  animation: marker-pulse 2.4s ease-out infinite;
+}
+
+/* Breathing glow behind the DIDI device. */
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(0.9);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.18);
+    opacity: 1;
+  }
+}
+.animate-breathe {
+  animation: breathe 4s ease-in-out infinite;
+}
+
+/* Faster float for the DIDI device. */
+@keyframes float-device {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+.animate-float-device {
+  animation: float-device 4s ease-in-out infinite;
+}
+
 /* Floating blurred-orb decoration (ported from the Lovable draft) */
 @keyframes float-slow {
   0%,
