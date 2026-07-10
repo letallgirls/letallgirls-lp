@@ -1,6 +1,10 @@
-import { motion } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
+import { useRef } from 'react'
 import { Reveal } from '../ui/Reveal'
 import didiDevice from '../../assets/images/didi-device.png'
+import stepSetup from '../../assets/images/step-setup-tanzania.png'
+import stepConnect from '../../assets/images/impact-students.jpg'
+import stepLearn from '../../assets/images/gallery-3.jpg'
 
 const didiCapabilities = [
   { title: 'Works 100% offline', body: 'No internet connection required — ever.' },
@@ -30,18 +34,30 @@ const callouts: {
 ]
 
 const steps = [
-  { step: '01', title: 'Set up in a classroom or library.', body: 'Just press the power button.' },
+  {
+    step: '01',
+    title: 'Set up in a classroom or library.',
+    body: 'Just press the power button.',
+    image: stepSetup,
+    rotation: -2.5,
+  },
   {
     step: '02',
     title: 'Connect any device.',
     body: 'DIDI broadcasts a local WiFi network. Students connect with whatever phone, tablet, or laptop they already have.',
+    image: stepConnect,
+    rotation: 1.5,
   },
   {
     step: '03',
     title: 'Learn.',
     body: "Students explore dozens of curated resources or ask DIDI's AI a question directly.",
+    image: stepLearn,
+    rotation: -1,
   },
 ]
+
+
 
 const VIEWPORT = { once: true, margin: '-100px' } as const
 
@@ -186,32 +202,127 @@ export function DidiSection() {
           </div>
         </div>
 
-        <Reveal>
-          <h3 className="text-25 md:text-31 font-semibold mb-12 tracking-tight">
-            How it works, in three steps.
-          </h3>
-        </Reveal>
-        <div className="relative grid md:grid-cols-3 gap-8 md:gap-12 mt-4">
-          {steps.map((step, i) => (
-            <Reveal key={step.step} delay={i * 0.12} className="relative">
-              <div className="relative pl-6 md:pl-0 md:pt-8 border-l-2 md:border-l-0 border-brave-primary/20 h-full md:text-center">
-                {/* Connecting horizontal line to next step (desktop only) */}
-                {i !== steps.length - 1 && (
-                  <div className="hidden md:block absolute top-[5px] left-1/2 w-[calc(100%+3rem)] h-[2px] bg-brave-primary/20" />
-                )}
-                {/* Dot */}
-                <span className="absolute -left-[7px] top-0 md:left-1/2 md:-translate-x-1/2 md:-top-[1px] size-3 rounded-full bg-brave-primary z-10" />
+        {/* ─── How-it-works: Polaroid cards + curved connector ─── */}
+        <HowItWorksSteps />
+      </div>
+    </section>
+  )
+}
 
-                <span className="inline-block mt-[-2px] md:mt-0 text-13 text-label font-semibold text-brave-primary uppercase tracking-widest">
-                  Step {step.step}
-                </span>
-                <h4 className="text-20 font-semibold mt-2 md:mt-3 mb-2 md:mb-3">{step.title}</h4>
-                <p className="text-night/60 font-medium leading-[1.4] md:mx-auto md:max-w-xs">{step.body}</p>
+/**
+ * The three-step polaroid-card section with a curved SVG connector.
+ * Extracted as a sibling component so we can use hooks (useRef / useInView)
+ * to animate the SVG path draw-in on scroll.
+ */
+function HowItWorksSteps() {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const isInView = useInView(containerRef, { once: true, margin: '-100px' })
+
+  /*
+   * Desktop SVG curve — a gentle wave spanning all 3 columns.
+   * ViewBox: 0 0 900 120  (wide, shallow).
+   * Card centres sit at roughly x=150, x=450, x=750 (each col centre at 1/6, 3/6, 5/6).
+   * The curve dips down at the middle card and rises at the outer two.
+   */
+  const curvePath = 'M 60 50 C 200 50, 250 90, 450 90 C 650 90, 700 50, 840 50'
+
+  return (
+    <>
+      <Reveal>
+        <h3 className="text-25 md:text-31 font-semibold mb-12 tracking-tight">
+          How it works, in three steps.
+        </h3>
+      </Reveal>
+
+      <div ref={containerRef} className="relative mt-4">
+        {/* ── Desktop curved connector SVG (hidden on mobile) ── */}
+        <svg
+          viewBox="0 0 900 120"
+          fill="none"
+          preserveAspectRatio="none"
+          className="pointer-events-none absolute inset-x-0 top-[55%] hidden md:block h-24 w-full z-0"
+          aria-hidden
+        >
+          {/* The wave */}
+          <motion.path
+            d={curvePath}
+            stroke="#3a51aa"
+            strokeWidth={2}
+            strokeOpacity={0.22}
+            strokeDasharray="8 6"
+            fill="none"
+            vectorEffect="non-scaling-stroke"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={isInView ? { pathLength: 1, opacity: 1 } : {}}
+            transition={{ duration: 1.2, ease: 'easeOut', delay: 0.3 }}
+          />
+          {/* Dots where the curve meets each card */}
+          {[60, 450, 840].map((cx, i) => (
+            <motion.circle
+              key={cx}
+              cx={cx}
+              cy={i === 1 ? 90 : 50}
+              r={5}
+              fill="#3a51aa"
+              fillOpacity={0.35}
+              initial={{ scale: 0, opacity: 0 }}
+              animate={isInView ? { scale: 1, opacity: 1 } : {}}
+              transition={{ duration: 0.4, delay: 0.6 + i * 0.2, ease: 'backOut' }}
+            />
+          ))}
+        </svg>
+
+        {/* ── Cards grid ── */}
+        <div className="grid md:grid-cols-3 gap-8 md:gap-10">
+          {steps.map((step, i) => (
+            <Reveal key={step.step} delay={i * 0.14}>
+              {/* Wrapper — centres card on mobile, adds wave-riding offset on md */}
+              <div className="group relative z-10 flex justify-center">
+                <motion.div
+                  className={`relative w-full max-w-[17rem] md:max-w-none ${i === 1 ? 'md:mt-8' : ''}`}
+                  initial={{ rotate: 0 }}
+                  whileInView={{ rotate: step.rotation }}
+                  whileHover={{ rotate: 0, scale: 1.03 }}
+                  viewport={{ once: true, margin: '-60px' }}
+                  transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+                >
+                  {/* Polaroid frame */}
+                  <div className="rounded-sm bg-cloud-light shadow-[0_4px_24px_rgba(31,34,48,0.10),0_1.5px_6px_rgba(31,34,48,0.06)] overflow-hidden">
+                    {/* Pin / tape accent */}
+                    <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 z-20 w-10 h-5 rounded-b-md bg-blossom-accent/70 shadow-sm" />
+
+                    {/* Photo */}
+                    <div className="img-grain aspect-[4/3] overflow-hidden">
+                      <img
+                        src={step.image}
+                        alt={step.title}
+                        className="h-full w-full object-cover"
+                        loading="lazy"
+                      />
+                    </div>
+
+                    {/* Polaroid chin — caption area */}
+                    <div className="px-4 pt-4 pb-5">
+                      <span className="text-13 text-label font-semibold text-brave-primary/60 tracking-widest uppercase">
+                        {step.step}
+                      </span>
+                      <h4 className="text-16 md:text-20 font-semibold mt-1.5 leading-tight tracking-tight">
+                        {step.title}
+                      </h4>
+                      <p className="text-13 text-night/55 font-medium leading-[1.4] mt-1.5">
+                        {step.body}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
               </div>
             </Reveal>
           ))}
         </div>
+
+        {/* ── Mobile vertical dashed connector (hidden on md+) ── */}
+        <div className="md:hidden absolute left-1/2 top-8 bottom-8 -translate-x-1/2 w-px border-l-2 border-dashed border-brave-primary/15 z-0" />
       </div>
-    </section>
+    </>
   )
 }
