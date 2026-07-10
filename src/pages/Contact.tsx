@@ -7,7 +7,7 @@ export function Contact() {
   return (
     <>
       <ContactHero />
-      <section className="pb-24 px-6">
+      <section className="pt-10 md:pt-16 pb-24 px-6">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-[1.3fr_0.7fr] gap-8 items-start">
           <Reveal>
             <ContactForm />

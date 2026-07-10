@@ -1,16 +1,19 @@
-import { motion } from 'framer-motion'
 import { Reveal } from '../ui/Reveal'
+import g1 from '../../assets/images/gallery-1.jpg'
+import g3 from '../../assets/images/gallery-3.jpg'
+import g4 from '../../assets/images/gallery-4.jpg'
+import g5 from '../../assets/images/gallery-5.jpg'
+import g6 from '../../assets/images/gallery-6.jpg'
 
-// Placeholder tiles until real field photography is supplied. The `.img-grain`
-// utility lays the brand's pixely grain ON the image area only (per brand guide
-// + stakeholder feedback), rather than on section chrome. Swap the gradient
-// placeholder for an <img> later and keep the `img-grain` wrapper.
+// One large feature tile + four supporting tiles. These spans tile a 4x2 grid
+// (and a 2x4 grid on mobile) with no gaps, so the layout stays intentional
+// rather than ragged. g1 is the wide group shot, so it leads as the feature.
 const tiles = [
-  { caption: 'Classroom in South Sudan', span: 'sm:col-span-2 sm:row-span-2' },
-  { caption: 'Students with DIDI' },
-  { caption: 'On the ground' },
-  { caption: 'Teacher training' },
-  { caption: 'Deployment day' },
+  { src: g1, span: 'col-span-2 row-span-2' },
+  { src: g3, span: '' },
+  { src: g4, span: '' },
+  { src: g5, span: '' },
+  { src: g6, span: '' },
 ]
 
 export function GallerySection() {
@@ -24,26 +27,18 @@ export function GallerySection() {
           <h2 className="text-31 md:text-39 font-semibold mt-4 leading-[1.1] tracking-tight">
             Moments from the field.
           </h2>
-          <p className="mt-3 text-lg text-night/60 font-medium">
-            Photography coming soon — placeholders shown below.
-          </p>
         </Reveal>
-        <div className="grid grid-cols-2 sm:grid-cols-4 auto-rows-[10rem] sm:auto-rows-[12rem] gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 auto-rows-[10rem] sm:auto-rows-[13rem] gap-3 sm:gap-4">
           {tiles.map((tile, i) => (
-            <Reveal
-              key={tile.caption}
-              delay={i * 0.06}
-              className={tile.span ?? ''}
-            >
-              <motion.div
-                whileHover={{ y: -4 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="img-grain h-full w-full rounded-2xl overflow-hidden border border-brave-primary/10 bg-gradient-to-br from-brave-neutral/40 to-harmonica-accent/40 flex items-end p-4"
-              >
-                <span className="relative z-10 text-13 text-label font-semibold text-cloud-light drop-shadow">
-                  {tile.caption}
-                </span>
-              </motion.div>
+            <Reveal key={i} delay={i * 0.05} className={`group ${tile.span}`}>
+              <div className="img-grain h-full w-full rounded-2xl overflow-hidden">
+                <img
+                  src={tile.src}
+                  alt="LetAllGirls in the field"
+                  loading="lazy"
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                />
+              </div>
             </Reveal>
           ))}
         </div>
