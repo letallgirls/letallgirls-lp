@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Reveal } from '../ui/Reveal'
-import { WorldMap, type MapLocation } from '../ui/Map'
+import { Globe, type MapLocation } from '../ui/Globe'
 
 const partners = [
   { country: 'South Sudan', devices: '2 deployed', org: 'Eta Power Youth Foundation' },
@@ -51,7 +51,7 @@ export function WhereWeWorkSection() {
                     onHoverStart={() => setActiveCountry(p.country)}
                     onHoverEnd={() => setActiveCountry(null)}
                     onClick={() => setActiveCountry(isActive ? null : p.country)}
-                    className={`cursor-pointer py-6 md:py-8 border-b border-brave-primary/10 transition-all flex items-center justify-between gap-6 group ${i === 0 ? 'border-t' : ''}`}
+                    className={`cursor-pointer py-6 md:py-8 border-b border-brave-primary/10 border-l-2 pl-4 -ml-4 rounded-r-lg transition-all flex items-center justify-between gap-6 group ${i === 0 ? 'border-t' : ''} ${isActive ? 'border-l-brave-primary bg-brave-primary/[0.04]' : 'border-l-transparent'}`}
                   >
                     <div>
                       <div className="flex items-baseline gap-3 flex-wrap">
@@ -83,9 +83,9 @@ export function WhereWeWorkSection() {
               );
             })}
           </ul>
-          
-          <Reveal delay={0.2} className="relative w-full aspect-[4/5] md:aspect-square lg:aspect-[4/3] rounded-[2rem] bg-cloud-light shadow-sm border border-brave-primary/10 overflow-hidden flex items-center justify-center p-4 lg:p-8">
-            <WorldMap locations={mapLocations} activeLocationId={activeCountry} lineColor="#3a51aa" />
+
+          <Reveal delay={0.2} className="relative w-full flex items-center justify-center">
+            <Globe locations={mapLocations} activeLocationId={activeCountry} />
           </Reveal>
         </div>
 
