@@ -49,6 +49,8 @@ export function Globe({
   const [geographies, setGeographies] = useState<any[]>([])
   const [rotation, setRotation] = useState<[number, number]>([-AFRICA_CENTER[0], -AFRICA_CENTER[1]])
   const [hovered, setHovered] = useState(false)
+  const [inView, setInView] = useState(true)
+  const wrapRef = useRef<HTMLDivElement>(null)
   const reduced = usePrefersReducedMotion()
 
   const partnerNames = useMemo(() => new Set(locations.map((l) => l.id || l.label)), [locations])
@@ -75,14 +77,28 @@ export function Globe({
     }
   }, [])
 
+  // Only animate while the globe is actually on screen — saves CPU/battery on
+  // low-end devices (it sits near the bottom of a long page).
+  useEffect(() => {
+    const el = wrapRef.current
+    if (!el) return
+    const io = new IntersectionObserver(([e]) => setInView(e.isIntersecting), { rootMargin: '150px' })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+
   // Animation loop: auto-spin when idle, ease to the active country on hover.
   const rot = useRef(rotation)
   rot.current = rotation
   useEffect(() => {
+    if (!inView) return
     let raf = 0
     let last = performance.now()
+    const FRAME = 1000 / 60 // cap at 60fps for smoother animation, saving CPU on 120hz displays
     const tick = (now: number) => {
-      const dt = Math.min(now - last, 50)
+      raf = requestAnimationFrame(tick)
+      if (now - last < FRAME) return
+      const dt = Math.min(now - last, 60)
       last = now
       let [lam, phi] = rot.current
 
@@ -107,11 +123,10 @@ export function Globe({
       else if (lam < -180) lam += 360
 
       setRotation([lam, phi])
-      raf = requestAnimationFrame(tick)
     }
     raf = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(raf)
-  }, [activeLoc, reduced, hovered])
+  }, [activeLoc, reduced, hovered, inView])
 
   const projection = useMemo(
     () =>
@@ -128,6 +143,7 @@ export function Globe({
 
   return (
     <div
+      ref={wrapRef}
       className="relative w-full aspect-square max-w-[30rem] mx-auto"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
