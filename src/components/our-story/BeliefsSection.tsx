@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import impactIllustration from '../../assets/images/impact-illustration.jpg'
+import impactPhoto from '../../assets/images/gallery-6.jpg'
 import { Reveal } from '../ui/Reveal'
 import { GooeyText } from '../ui/GooeyText'
 import { GOFUNDME_URL, EXTERNAL_LINK_PROPS } from '../../constants/links'
@@ -9,17 +9,17 @@ export function BeliefsSection() {
     <section className="py-32 px-6">
       <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
         <Reveal>
-          <figure className="max-w-md mx-auto">
+          <figure>
             <img
-              src={impactIllustration}
-              alt="Students gathered around a small device in a sunlit classroom — editorial illustration"
-              width={1024}
-              height={1280}
+              src={impactPhoto}
+              alt="Two students in school uniform smiling together"
+              width={1080}
+              height={645}
               loading="lazy"
-              className="w-full h-auto block mix-blend-multiply"
+              className="w-full aspect-[4/3] object-cover object-top rounded-2xl"
             />
             <figcaption className="mt-4 pl-2 border-l border-night/30 text-13 text-label uppercase tracking-[0.28em] text-night/55 font-medium">
-              Illustration · A classroom around DIDI
+              Photo · Students in South Sudan
             </figcaption>
           </figure>
         </Reveal>
