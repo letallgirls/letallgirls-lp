@@ -288,9 +288,6 @@ function HowItWorksSteps() {
             </Reveal>
           ))}
         </div>
-
-        {/* ── Mobile vertical dashed connector (hidden on md+) ── */}
-        <div className="md:hidden absolute left-1/2 top-8 bottom-8 -translate-x-1/2 w-px border-l-2 border-dashed border-brave-primary/15 z-0" />
       </div>
     </>
   )

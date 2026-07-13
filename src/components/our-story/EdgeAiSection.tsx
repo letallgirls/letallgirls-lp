@@ -1,23 +1,62 @@
+import type { ReactNode } from 'react'
 import { motion } from 'framer-motion'
-import deviceIllustration from '../../assets/images/device-illustration.jpg'
+import didiDevice from '../../assets/images/didi-device.png'
 import { Reveal } from '../ui/Reveal'
+
+const icon = (path: ReactNode) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} className="size-6">
+    {path}
+  </svg>
+)
 
 const principles = [
   {
     title: 'Offline by design',
     body: 'Everything DIDI does runs on-device. No internet, no dependency on cellular networks, no cloud round-trips.',
+    icon: icon(
+      <>
+        <path
+          strokeLinecap="round"
+          d="M1 8.5a15.9 15.9 0 014.7-2.88M10.71 5.05A16 16 0 0122.58 8M5 12.55a10.94 10.94 0 015.17-2.4M16.72 11.06A10.94 10.94 0 0119 12.55M8.53 16.11a6 6 0 016.95 0"
+        />
+        <path strokeLinecap="round" d="M1 1l22 22" />
+        <circle cx="12" cy="20" r="1" fill="currentColor" stroke="none" />
+      </>,
+    ),
   },
   {
     title: 'Compute at the edge',
     body: 'A small language model runs locally, so students get real-time AI tutoring inside a mud-brick classroom just as quickly as a coastal one.',
+    icon: icon(
+      <>
+        <rect x="4" y="4" width="16" height="16" rx="2" />
+        <rect x="9" y="9" width="6" height="6" />
+        <path strokeLinecap="round" d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3" />
+      </>,
+    ),
   },
   {
     title: 'Solar-first hardware',
     body: 'Low-power silicon and solar charging mean the device works through outages and off-grid — where the electricity comes and goes.',
+    icon: icon(
+      <>
+        <circle cx="12" cy="12" r="5" />
+        <path
+          strokeLinecap="round"
+          d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
+        />
+      </>,
+    ),
   },
   {
     title: 'Local curriculum, always',
     body: "Content is tuned to each country's national curriculum before deployment, in partnership with local schools and teachers.",
+    icon: icon(
+      <>
+        <path strokeLinejoin="round" d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z" />
+        <path strokeLinejoin="round" d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" />
+      </>,
+    ),
   },
 ]
 
@@ -41,33 +80,35 @@ export function EdgeAiSection() {
           </Reveal>
           <Reveal delay={0.15}>
             <figure className="relative">
+              <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                <div className="animate-breathe size-[70%] rounded-full bg-skyward-accent/35 blur-3xl" />
+              </div>
               <img
-                src={deviceIllustration}
-                alt="A DIDI edge-AI device on a wooden desk — editorial illustration"
-                width={1024}
-                height={1024}
+                src={didiDevice}
+                alt="The DIDI edge-AI device"
                 loading="lazy"
-                className="w-full h-auto block mix-blend-multiply"
+                className="animate-float-device relative mx-auto w-full max-w-md h-auto object-contain drop-shadow-[0_35px_45px_rgba(36,36,126,0.28)]"
               />
               <figcaption className="mt-4 pl-2 border-l border-night/30 text-13 text-label uppercase tracking-[0.28em] text-night/55 font-medium">
-                Illustration · DIDI on the desk
+                DIDI · The device itself
               </figcaption>
             </figure>
           </Reveal>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid sm:grid-cols-2">
           {principles.map((p, i) => (
             <Reveal key={p.title} delay={i * 0.08}>
               <motion.div
-                whileHover={{ y: -4 }}
+                whileHover={{ y: -3 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="h-full p-8 bg-brave-light rounded-2xl border border-brave-primary/10 hover:border-brave-primary/40 hover:shadow-lg hover:shadow-brave-primary/5 transition-all"
+                className={`group relative h-full p-8 md:p-10 border-brave-primary/10 ${
+                  i % 2 === 0 ? 'sm:border-r' : ''
+                } ${i < principles.length - 2 ? 'border-b' : ''}`}
               >
-                <div className="size-10 rounded-lg bg-brave-primary/10 flex items-center justify-center mb-5">
-                  <span className="text-brave-primary font-semibold text-13">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
+                <span className="absolute left-0 top-0 bottom-0 w-0.5 origin-center scale-y-0 bg-brave-primary transition-transform duration-300 group-hover:scale-y-100" />
+                <div className="mb-5 text-brave-primary/70 transition-colors group-hover:text-brave-primary">
+                  {p.icon}
                 </div>
                 <h3 className="text-20 font-semibold mb-2">{p.title}</h3>
                 <p className="text-night/60 font-medium leading-[1.4]">{p.body}</p>

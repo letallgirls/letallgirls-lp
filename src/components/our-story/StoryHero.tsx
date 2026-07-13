@@ -1,33 +1,66 @@
-import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
+import storyIllustration from '../../assets/images/story-illustration.jpg'
+import { Reveal } from '../ui/Reveal'
+import { IllustratedHero } from '../ui/IllustratedHero'
+import { GOFUNDME_URL, EXTERNAL_LINK_PROPS } from '../../constants/links'
 
 export function StoryHero() {
   return (
-    <section className="relative pt-20 pb-24 px-6 overflow-hidden">
-      {/* Background gradients with a mask that fades out at the bottom so it seamlessly blends into the next section */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none [mask-image:linear-gradient(to_bottom,black_50%,transparent_100%)]">
-        <div className="absolute -top-32 -right-40 size-96 bg-skyward-accent/40 blur-3xl rounded-full animate-float-slow" />
-        <div className="absolute -bottom-40 -left-32 size-96 bg-blossom-accent/30 blur-3xl rounded-full animate-float-slow [animation-delay:2s]" />
-      </div>
-      <div className="relative max-w-5xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <span className="text-13 text-label font-semibold text-brave-primary uppercase tracking-widest">
-            About LetAllGirls
-          </span>
-          <h1 className="mt-4 text-49 md:text-76 font-semibold leading-[1.05] tracking-tight text-night max-w-4xl">
-            Building the classroom{' '}
-            <span className="text-brave-primary">the infrastructure forgot.</span>
-          </h1>
-          <p className="mt-8 text-20 text-night/70 leading-[1.5] font-medium max-w-2xl">
-            LetAllGirls is a 501(c)(3) nonprofit building edge-AI hardware for schools without
-            internet. Our first device, DIDI, brings a personal AI tutor, a full digital library, and
-            teacher tools to any classroom — powered by solar, running entirely offline.
-          </p>
-        </motion.div>
-      </div>
-    </section>
+    <IllustratedHero
+      eyebrow="In memory of Didi"
+      headline={
+        <>
+          A promise, made in her name.{' '}
+          <span className="text-brave-primary">Built in her memory.</span>
+        </>
+      }
+      body={
+        <>
+          <Reveal as="p" direction="up" distance={20} delay={0.25}>
+            In March 2023, <strong className="text-night">Ding Mayen "Didi" Kuai</strong> — a
+            Babson College freshman from South Sudan — unexpectedly passed away. Didi had lived
+            the exact problem LetAllGirls now exists to solve: one overworked teacher, sixty
+            students, no internet, no textbooks.
+          </Reveal>
+          <Reveal as="p" direction="up" distance={20} delay={0.35}>
+            Before she passed, Didi had set up a GoFundMe for an idea she called LetAllGirls. She
+            never got to see it built. In the days that followed, more than 180 people, moved by
+            her story, donated nearly $6,000 almost overnight.
+          </Reveal>
+          <Reveal as="p" direction="up" distance={20} delay={0.45}>
+            The team picked up where she started. With that $6,000, they built three DIDI
+            prototypes in partnership with schools, teachers, and students in South Sudan — the
+            first real step of Didi's vision made physical.
+          </Reveal>
+        </>
+      }
+      media={
+        <img
+          src={storyIllustration}
+          alt="A schoolgirl reading under a mango tree — editorial illustration"
+          width={1024}
+          height={1280}
+          className="w-full h-auto block mix-blend-multiply"
+        />
+      }
+      caption="Illustration · Under the mango tree"
+      ctas={
+        <>
+          <a
+            href={GOFUNDME_URL}
+            {...EXTERNAL_LINK_PROPS}
+            className="px-8 py-4 bg-brave-primary text-cloud-light font-semibold rounded-full hover:bg-brave-extra transition-all"
+          >
+            Continue her vision
+          </a>
+          <Link
+            to="/#didi"
+            className="px-8 py-4 bg-cloud-light text-night border border-brave-neutral/40 font-semibold rounded-full hover:border-brave-primary transition-all"
+          >
+            Meet DIDI
+          </Link>
+        </>
+      }
+    />
   )
 }

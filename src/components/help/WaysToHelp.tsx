@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react'
-import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { Reveal } from '../ui/Reveal'
 import { GOFUNDME_URL, EXTERNAL_LINK_PROPS } from '../../constants/links'
@@ -62,24 +61,27 @@ const ways: Way[] = [
 ]
 
 function CardCta({ way }: { way: Way }) {
-  const className = way.highlight
-    ? 'inline-flex items-center gap-2 rounded-full bg-cloud-light text-brave-primary px-6 py-2.5 text-13 font-semibold hover:-translate-y-0.5 transition-transform'
-    : 'inline-flex items-center gap-2 rounded-full bg-brave-primary text-cloud-light px-6 py-2.5 text-13 font-semibold hover:bg-brave-extra transition-colors'
+  const content = (
+    <span className="group/cta inline-flex items-center gap-1.5 text-16 font-semibold text-brave-primary">
+      {way.cta}
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="size-3.5 transition-transform group-hover/cta:translate-x-0.5">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6" />
+      </svg>
+    </span>
+  )
 
   return way.external ? (
-    <a href={way.href} {...EXTERNAL_LINK_PROPS} className={className}>
-      {way.cta}
+    <a href={way.href} {...EXTERNAL_LINK_PROPS}>
+      {content}
     </a>
   ) : (
-    <Link to={way.href} className={className}>
-      {way.cta}
-    </Link>
+    <Link to={way.href}>{content}</Link>
   )
 }
 
 export function WaysToHelp() {
   return (
-    <section className="py-24 px-6 bg-brave-extra/[0.03]">
+    <section className="py-24 px-6">
       <div className="max-w-7xl mx-auto">
         <Reveal className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
           <div className="max-w-2xl">
@@ -96,38 +98,26 @@ export function WaysToHelp() {
           </div>
         </Reveal>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {ways.map((way, i) => (
-            <Reveal key={way.title} delay={i * 0.06}>
-              <motion.article
-                whileHover={{ y: -6 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className={`h-full p-8 rounded-3xl flex flex-col transition-all ${
-                  way.highlight
-                    ? 'bg-brave-primary text-cloud-light shadow-xl shadow-brave-primary/20'
-                    : 'bg-brave-light text-night border border-brave-primary/10 hover:border-brave-primary/30'
-                }`}
-              >
-                <div
-                  className={`size-12 rounded-2xl flex items-center justify-center mb-6 ${
-                    way.highlight ? 'bg-cloud-light/15 text-cloud-light' : 'bg-brave-primary/10 text-brave-primary'
-                  }`}
-                >
-                  {way.icon}
-                </div>
-                <h3 className="text-25 font-semibold mb-3 leading-tight">{way.title}</h3>
-                <p
-                  className={`font-medium leading-[1.5] flex-1 mb-8 ${
-                    way.highlight ? 'text-cloud-light/80' : 'text-night/60'
-                  }`}
-                >
-                  {way.body}
-                </p>
-                <CardCta way={way} />
-              </motion.article>
-            </Reveal>
+        <Reveal delay={0.1} className="grid sm:grid-cols-2 lg:grid-cols-3 rounded-2xl border-t border-l border-night/10 overflow-hidden">
+          {ways.map((way) => (
+            <article
+              key={way.title}
+              className={`relative p-8 md:p-10 flex flex-col border-r border-b border-night/10 ${
+                way.highlight ? 'bg-brave-light/50' : ''
+              }`}
+            >
+              {way.highlight && (
+                <span className="absolute top-8 right-8 md:top-10 md:right-10 text-13 text-label font-semibold text-brave-primary uppercase tracking-widest">
+                  Recommended
+                </span>
+              )}
+              <div className="text-brave-primary mb-5">{way.icon}</div>
+              <h3 className="text-20 font-semibold mb-2.5 leading-tight text-night">{way.title}</h3>
+              <p className="text-16 text-night/60 font-medium leading-[1.5] flex-1 mb-6">{way.body}</p>
+              <CardCta way={way} />
+            </article>
           ))}
-        </div>
+        </Reveal>
       </div>
     </section>
   )

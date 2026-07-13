@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
-import heroPhoto from '../../assets/images/WhatsApp_Image_2024-11-12_at_10.55.53_AM_1.jpg'
+import heroPhoto from '../../assets/images/help-hero-photo.png'
 
 /* ------------------------------------------------------------------ */
 /*  Inline glyph                                                       */
@@ -196,7 +196,7 @@ export function HelpHero() {
         <div className="relative">
           {/* "HOW TO HELP" label floating in the TL notch blank space */}
           <div className="hidden md:flex absolute top-0 left-0 w-[15rem] h-[5rem] items-center justify-center">
-            <p className="text-13 text-label font-semibold uppercase tracking-[0.25em] text-night/50">
+            <p className="text-13 text-label font-semibold uppercase tracking-[0.25em] text-brave-primary">
               How to Help
             </p>
           </div>
@@ -204,10 +204,11 @@ export function HelpHero() {
           <motion.div
             ref={topClip.ref}
             style={topClip.style}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="bg-brave-extra text-cloud-light rounded-[1.75rem] md:rounded-[2.5rem] px-6 md:px-12 py-10 md:py-12 md:min-h-[20rem] flex items-end"
+            initial={{ opacity: 0, y: 20, filter: 'blur(6px)' }}
+            whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            className="bg-gradient-brand text-cloud-light rounded-[1.75rem] md:rounded-[2.5rem] px-6 md:px-12 py-10 md:py-12 md:min-h-[20rem] flex items-end"
           >
             {/* Mobile-only label (inside the card since there's no notch on mobile) */}
             <p className="md:hidden text-13 text-label font-semibold uppercase tracking-[0.25em] text-cloud-light/70 mb-4">
@@ -227,16 +228,16 @@ export function HelpHero() {
           <motion.div
             ref={bottomClip.ref}
             style={bottomClip.style}
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 24, filter: 'blur(6px)' }}
+            whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
             className="img-grain rounded-[1.75rem] md:rounded-[2.5rem] overflow-hidden"
           >
             <img
               src={heroPhoto}
-              alt="Students learning together on a tablet connected to DIDI"
-              className="w-full h-64 md:h-[28rem] object-cover object-[center_75%]"
+              alt="Students celebrating together outside their school in South Sudan"
+              className="w-full h-64 md:h-[28rem] object-cover object-center mix-blend-multiply"
               fetchPriority="high"
             />
           </motion.div>

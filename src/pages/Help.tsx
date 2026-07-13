@@ -1,7 +1,6 @@
 import { HelpHero } from '../components/help/HelpHero'
 import { WaysToHelp } from '../components/help/WaysToHelp'
 import { SustainModel } from '../components/help/SustainModel'
-import { GradientCta } from '../components/help/GradientCta'
 
 export function Help() {
   return (
@@ -9,7 +8,6 @@ export function Help() {
       <HelpHero />
       <WaysToHelp />
       <SustainModel />
-      <GradientCta />
     </>
   )
 }

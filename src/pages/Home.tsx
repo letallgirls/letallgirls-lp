@@ -1,4 +1,4 @@
-import { HeroStory } from '../components/home/HeroStory'
+import { HeroMission } from '../components/home/HeroMission'
 import { DidiSection } from '../components/home/DidiSection'
 import { ProblemSection } from '../components/home/ProblemSection'
 import { ImpactSection } from '../components/home/ImpactSection'
@@ -8,7 +8,7 @@ import { HelpSection } from '../components/home/HelpSection'
 export function Home() {
   return (
     <>
-      <HeroStory />
+      <HeroMission />
       <DidiSection />
       <ProblemSection />
       <ImpactSection />
