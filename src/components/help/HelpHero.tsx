@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
-import heroPhoto from '../../assets/images/help-hero-photo.png'
+import heroPhoto from '../../assets/images/girls.png'
 
 /* ------------------------------------------------------------------ */
 /*  Inline glyph                                                       */
@@ -9,7 +9,7 @@ import heroPhoto from '../../assets/images/help-hero-photo.png'
 /** Small circular-outlined education glyph, Klim-style. */
 function EduGlyph() {
   return (
-    <span className="inline-flex items-center justify-center align-middle size-[0.82em] rounded-full border-[0.06em] border-cloud-light mx-[0.15em] translate-y-[-0.05em]">
+    <span className="inline-flex items-center justify-center align-middle size-[0.82em] rounded-full border-[0.06em] border-current mx-[0.15em] translate-y-[-0.05em]">
       <svg
         viewBox="0 0 24 24"
         fill="none"
@@ -208,13 +208,13 @@ export function HelpHero() {
             whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            className="bg-gradient-brand text-cloud-light rounded-[1.75rem] md:rounded-[2.5rem] px-6 md:px-12 py-10 md:py-12 md:min-h-[20rem] flex items-end"
+            className="bg-gradient-to-br from-brave-primary to-blossom-extra text-cloud-light rounded-[1.75rem] md:rounded-[2.5rem] pl-7 pr-6 md:pl-14 md:pr-10 py-10 md:py-12 md:min-h-[20rem] flex items-end"
           >
             {/* Mobile-only label (inside the card since there's no notch on mobile) */}
-            <p className="md:hidden text-13 text-label font-semibold uppercase tracking-[0.25em] text-cloud-light/70 mb-4">
+            <p className="md:hidden text-13 text-label font-semibold uppercase tracking-[0.25em]  text-cloud-light/70 mb-4">
               How to Help
             </p>
-            <h1 className="mt-0 text-31 md:text-49 font-semibold leading-[1.05] tracking-tight text-cloud-light max-w-3xl">
+            <h1 className="mt-0 text-31 md:text-[2.9rem] font-semibold leading-[1.05] tracking-tight text-cloud-light max-w-3xl">
               Turn your support <EduGlyph />{' '}
               <br className="hidden md:block" />
               into a real classroom.
@@ -222,32 +222,31 @@ export function HelpHero() {
           </motion.div>
         </div>
 
-
         {/* ── Bottom card ── */}
         <div className="relative mt-4 md:mt-5">
-          <motion.div
-            ref={bottomClip.ref}
-            style={bottomClip.style}
-            initial={{ opacity: 0, y: 24, filter: 'blur(6px)' }}
-            whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-            className="img-grain rounded-[1.75rem] md:rounded-[2.5rem] overflow-hidden"
-          >
-            <img
-              src={heroPhoto}
-              alt="Students celebrating together outside their school in South Sudan"
-              className="w-full h-64 md:h-[28rem] object-cover object-center mix-blend-multiply"
-              fetchPriority="high"
-            />
-          </motion.div>
+            <motion.div
+              ref={bottomClip.ref}
+              style={bottomClip.style}
+              initial={{ opacity: 0, y: 24, filter: 'blur(6px)' }}
+              whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              viewport={{ once: true, margin: '-80px' }}
+              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+              className="img-grain rounded-[1.75rem] md:rounded-[2.5rem] overflow-hidden"
+            >
+              <img
+                src={heroPhoto}
+                alt="Students celebrating together outside their school in South Sudan"
+                className="w-full h-56 md:h-[22rem] object-cover object-center mix-blend-multiply"
+                fetchPriority="high"
+              />
+            </motion.div>
 
-          {/* Caption in the transparent top-right pocket (desktop) */}
-          <div className="hidden md:flex absolute top-0 right-0 w-[26rem] h-[7rem] items-center pl-8 pr-6">
-            <p className="text-16 text-night/70 leading-[1.5] font-medium">
-              {CAPTION}
-            </p>
-          </div>
+            {/* Caption in the transparent top-right pocket (desktop) */}
+            <div className="hidden md:flex absolute top-0 right-0 w-[26rem] h-[7rem] items-center pl-8 pr-6">
+              <p className="text-16 text-night/70 leading-[1.5] font-medium">
+                {CAPTION}
+              </p>
+            </div>
 
           {/* Caption below the photo (mobile) */}
           <p className="md:hidden mt-4 text-16 text-night/70 leading-[1.55] font-medium">
