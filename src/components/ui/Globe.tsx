@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { geoOrthographic, geoPath, geoGraticule, geoDistance } from 'd3-geo'
+import { geoOrthographic, geoPath, geoGraticule, geoDistance, geoCentroid } from 'd3-geo'
 import { feature } from 'topojson-client'
 import type { FeatureCollection, Geometry } from 'geojson'
 
@@ -42,9 +42,13 @@ function usePrefersReducedMotion() {
 export function Globe({
   locations = [],
   activeLocationId = null,
+  className = 'w-full aspect-square max-w-[30rem] mx-auto',
+  labelPosition = 'bottom',
 }: {
   locations?: MapLocation[]
   activeLocationId?: string | null
+  className?: string
+  labelPosition?: 'bottom' | 'top'
 }) {
   const [geographies, setGeographies] = useState<any[]>([])
   const [rotation, setRotation] = useState<[number, number]>([-AFRICA_CENTER[0], -AFRICA_CENTER[1]])
@@ -141,10 +145,19 @@ export function Globe({
   const graticule = useMemo(() => geoGraticule().step([20, 20])(), [])
   const center: [number, number] = [-rotation[0], -rotation[1]]
 
+  // Precomputed once per data load (not per frame) — lets the render loop skip
+  // running the path generator on countries that are fully back-facing, which
+  // is the bulk of the per-frame cost at 60fps.
+  const centroids = useMemo(() => geographies.map((g) => geoCentroid(g)), [geographies])
+  // Generous buffer past the true 90° horizon so large countries near the limb
+  // (whose centroid is just past-back but whose shape still pokes into view)
+  // never visibly pop in/out.
+  const BACK_FACE_CUTOFF = Math.PI / 2 + Math.PI / 12
+
   return (
     <div
       ref={wrapRef}
-      className="relative w-full aspect-square max-w-[30rem] mx-auto"
+      className={`relative ${className}`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -171,6 +184,7 @@ export function Globe({
 
         {/* land */}
         {geographies.map((geo, i) => {
+          if (geoDistance(centroids[i], center) > BACK_FACE_CUTOFF) return null
           const raw = geo.properties?.name as string | undefined
           const name = raw === 'S. Sudan' ? 'South Sudan' : raw
           const isPartner = name != null && partnerNames.has(name)
@@ -222,7 +236,7 @@ export function Globe({
 
       {/* active-country label */}
       <div
-        className={`pointer-events-none absolute bottom-2 left-1/2 -translate-x-1/2 rounded-xl bg-night px-4 py-2 text-13 font-semibold text-cloud-light shadow-xl transition-all duration-300 ${
+        className={`pointer-events-none absolute ${labelPosition === 'top' ? 'top-4' : 'bottom-2'} left-1/2 -translate-x-1/2 rounded-xl bg-night px-4 py-2 text-13 font-semibold text-cloud-light shadow-xl transition-all duration-300 ${
           activeLoc ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
         }`}
       >
