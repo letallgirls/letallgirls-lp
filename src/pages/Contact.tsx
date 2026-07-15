@@ -1,22 +1,15 @@
 import { ContactHero } from '../components/contact/ContactHero'
-import { ContactForm } from '../components/contact/ContactForm'
-import { ContactDetails } from '../components/contact/ContactDetails'
-import { Reveal } from '../components/ui/Reveal'
+import { ContactMethods } from '../components/contact/ContactMethods'
+// The full contact form (ContactForm.tsx) and the dark-card contact details
+// (ContactDetails.tsx) are left in place, unused, in case a stakeholder wants
+// the form back — swap ContactMethods for <ContactForm /> + <ContactDetails />
+// (see git history / this comment) to restore the previous layout.
 
 export function Contact() {
   return (
     <>
       <ContactHero />
-      <section className="pt-10 md:pt-16 pb-24 px-6">
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-[1.3fr_0.7fr] gap-8 items-start">
-          <Reveal>
-            <ContactForm />
-          </Reveal>
-          <Reveal delay={0.1}>
-            <ContactDetails />
-          </Reveal>
-        </div>
-      </section>
+      <ContactMethods />
     </>
   )
 }
