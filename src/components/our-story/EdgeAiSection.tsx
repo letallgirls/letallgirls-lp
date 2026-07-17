@@ -36,15 +36,16 @@ const principles = [
     ),
   },
   {
-    title: 'Solar-first hardware',
-    body: 'Low-power silicon and solar charging mean the device works through outages and off-grid — where the electricity comes and goes.',
+    title: 'A network of its own',
+    body: 'DIDI hosts its own private network, so student devices connect directly and reach hundreds of books, articles, and lessons with no internet connection at all.',
     icon: icon(
       <>
-        <circle cx="12" cy="12" r="5" />
-        <path
-          strokeLinecap="round"
-          d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
-        />
+        <rect x="9" y="9" width="6" height="6" rx="1" />
+        <path strokeLinecap="round" d="M12 9V4M12 15v5M9 12H4M15 12h5" />
+        <circle cx="12" cy="2.3" r="1.3" fill="currentColor" stroke="none" />
+        <circle cx="12" cy="21.7" r="1.3" fill="currentColor" stroke="none" />
+        <circle cx="2.3" cy="12" r="1.3" fill="currentColor" stroke="none" />
+        <circle cx="21.7" cy="12" r="1.3" fill="currentColor" stroke="none" />
       </>,
     ),
   },
@@ -75,7 +76,7 @@ export function EdgeAiSection() {
             <p className="text-lg text-night/70 leading-[1.5] font-medium">
               Most ed-tech assumes broadband, a power grid, and one device per student. DIDI assumes
               none of that. We push the model, the content, and the compute down to a single low-power
-              device — so learning happens where the students already are.
+              device, so learning happens where the students already are.
             </p>
           </Reveal>
           <Reveal delay={0.15}>

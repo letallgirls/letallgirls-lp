@@ -19,7 +19,7 @@ const timeline = [
   {
     year: '2026',
     title: 'Scaling the network',
-    body: 'New deployments committed across South Africa, Malawi, and Tanzania — with inbound interest from Pakistan, Bangladesh, Grenada, and Colombia.',
+    body: 'New deployments committed across South Africa, Malawi, and Tanzania, with inbound interest from Pakistan, Bangladesh, Grenada, and Colombia.',
   },
 ]
 

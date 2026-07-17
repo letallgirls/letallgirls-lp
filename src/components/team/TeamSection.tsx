@@ -11,6 +11,7 @@ import kuai from '../../assets/images/team-kuai.jpg'
 import luka from '../../assets/images/team-luka.jpg'
 import amou from '../../assets/images/team-amou.jpg'
 import ayen from '../../assets/images/team-ayen.jpg'
+import maria from '../../assets/images/team-maria.webp'
 
 type Person = { name: string; role: string; bio?: string; photo?: string }
 
@@ -26,7 +27,7 @@ const board: Person[] = [
   { name: 'Ian Lester', role: 'Board Member', photo: ian, bio: 'CEO of Beyond.co.za; 17 years of experience, UNICEF partnerships, and social-impact startups.' },
   { name: 'Soha Ehsani', role: 'Board Member', photo: soha, bio: 'Director of Century City Property; expertise in African logistics and impact-driven investment.' },
   { name: 'Margarita Fonnegra', role: 'Board Member', photo: margarita, bio: 'CFO of Centro Interactivo de CRM; financial planning for NGOs.' },
-  { name: 'María Pilar Amorocho Gutiérrez', role: 'Board Member', bio: 'CEO at FSQ Group; expertise in international expansion and corporate administration.' },
+  { name: 'María Pilar Amorocho Gutiérrez', role: 'Board Member', photo: maria, bio: 'CEO at FSQ Group; expertise in international expansion and corporate administration.' },
 ]
 
 const southSudan: Person[] = [

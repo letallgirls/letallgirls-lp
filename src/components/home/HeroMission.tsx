@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import classroomPhoto from '../../assets/images/hero-stack-classroom.png'
 import pledgePhoto from '../../assets/images/hero-stack-pledge.png'
-import readingPhoto from '../../assets/images/hero-stack-reading.png'
+import mentorshipPhoto from '../../assets/images/hero-stack-mentorship.png'
 import { Reveal } from '../ui/Reveal'
 import { IllustratedHero } from '../ui/IllustratedHero'
 import { ImageStack } from '../ui/ImageStack'
@@ -9,13 +9,13 @@ import { ImageStack } from '../ui/ImageStack'
 const heroImages = [
   { src: classroomPhoto, alt: 'Girls listening attentively in a classroom in South Sudan' },
   { src: pledgePhoto, alt: 'Students standing together at a school assembly in South Sudan' },
-  { src: readingPhoto, alt: 'A girl reading a worn notebook outdoors' },
+  { src: mentorshipPhoto, alt: 'A mentor talking with a student during a hands-on activity in South Sudan' },
 ]
 
 export function HeroMission() {
   return (
     <IllustratedHero
-      eyebrow="LetAllGirls — Our Mission"
+      eyebrow="LetAllGirls · Our Mission"
       headline={
         <>
           Building the classroom{' '}
@@ -30,8 +30,8 @@ export function HeroMission() {
           </Reveal>
           <Reveal as="p" direction="up" distance={20} delay={0.35}>
             Our first device, <strong className="text-night">DIDI</strong>, brings a personal AI
-            tutor, a full digital library, and teacher tools to any classroom — powered by solar,
-            running entirely offline.
+            tutor, a full digital library, and teacher tools to any classroom by hosting its own
+            local network, no internet connection required.
           </Reveal>
         </>
       }

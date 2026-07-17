@@ -2,11 +2,11 @@ import { motion } from 'framer-motion'
 import { Reveal } from '../ui/Reveal'
 import didiDevice from '../../assets/images/didi-device.png'
 import stepSetup from '../../assets/images/step-setup-tanzania.png'
-import stepConnect from '../../assets/images/impact-students.jpg'
-import stepLearn from '../../assets/images/gallery-3.jpg'
+import stepConnect from '../../assets/images/gadget-photo.jpg'
+import stepLearn from '../../assets/images/hero-stack-reading.png'
 
 const didiCapabilities = [
-  { title: 'Works 100% offline', body: 'No internet connection required — ever.' },
+  { title: 'Works 100% offline', body: 'No internet connection required, ever.' },
   { title: 'Personal AI tutor', body: 'Answers student questions in real time.' },
   { title: 'Teacher support', body: 'Helps teachers build lesson plans and track progress.' },
   { title: 'Digital library', body: "100+ resources where textbooks don't exist." },

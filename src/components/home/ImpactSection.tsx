@@ -15,7 +15,7 @@ const testimonials = [
   },
   {
     quote:
-      'Having access to the DIDI is a privilege — to support us to become the people we want to be.',
+      'Having access to the DIDI is a privilege that helps us become the people we want to be.',
     author: 'Daniela Achol Garang',
   },
 ]
@@ -75,7 +75,7 @@ export function ImpactSection() {
                   "{t.quote}"
                 </blockquote>
                 <figcaption className="mt-6 text-14 font-semibold text-night/60">
-                  — {t.author}
+                  · {t.author}
                 </figcaption>
               </figure>
             </Reveal>

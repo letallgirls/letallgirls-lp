@@ -22,7 +22,7 @@ export function TeamHero() {
             <span className="text-brave-primary">Didi's vision forward.</span>
           </h1>
           <p className="mt-8 text-20 text-night/70 leading-[1.5] font-medium max-w-2xl">
-            A team spread across three continents — builders, educators, and advisors — working
+            A team spread across three continents: builders, educators, and advisors, working
             alongside our partners on the ground in South Sudan and beyond.
           </p>
         </motion.div>

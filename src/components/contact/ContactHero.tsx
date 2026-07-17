@@ -22,7 +22,7 @@ export function ContactHero() {
           </h1>
           <p className="mt-8 text-20 text-night/70 leading-[1.5] font-medium max-w-2xl">
             Whether you want to sponsor a device, donate hardware, bring DIDI to your schools, or
-            just learn more — we'd love to hear from you. Reach out and we'll get back to you.
+            just learn more, we'd love to hear from you. Reach out and we'll get back to you.
           </p>
         </motion.div>
       </div>

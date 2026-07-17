@@ -17,8 +17,8 @@ export function StoryHero() {
       body={
         <>
           <Reveal as="p" direction="up" distance={20} delay={0.25}>
-            In March 2023, <strong className="text-night">Ding Mayen "Didi" Kuai</strong> — a
-            Babson College freshman from South Sudan — unexpectedly passed away. Didi had lived
+            In March 2023, <strong className="text-night">Ding Mayen "Didi" Kuai</strong>, a
+            Babson College freshman from South Sudan, unexpectedly passed away. Didi had lived
             the exact problem LetAllGirls now exists to solve: one overworked teacher, sixty
             students, no internet, no textbooks.
           </Reveal>
@@ -29,7 +29,7 @@ export function StoryHero() {
           </Reveal>
           <Reveal as="p" direction="up" distance={20} delay={0.45}>
             The team picked up where she started. With that $6,000, they built three DIDI
-            prototypes in partnership with schools, teachers, and students in South Sudan — the
+            prototypes in partnership with schools, teachers, and students in South Sudan: the
             first real step of Didi's vision made physical.
           </Reveal>
         </>
@@ -37,7 +37,7 @@ export function StoryHero() {
       media={
         <img
           src={storyIllustration}
-          alt="A schoolgirl reading under a mango tree — editorial illustration"
+          alt="A schoolgirl reading under a mango tree, editorial illustration"
           width={1024}
           height={1280}
           className="w-full h-auto block mix-blend-multiply"

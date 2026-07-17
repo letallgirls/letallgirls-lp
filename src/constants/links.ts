@@ -8,3 +8,9 @@ export const EXTERNAL_LINK_PROPS = {
   target: '_blank',
   rel: 'noopener noreferrer',
 } as const
+
+// Field partner organization sites, linked from the "Where We Work" list.
+export const EDU_POWER_YOUTH_FOUNDATION_URL = 'https://edupoweryouthfoundation.org/'
+export const HORIZON_INTERNATIONAL_URL = 'https://horizonorphans.com/'
+export const SUPPORTIVE_PILLAR_ORGANISATION_URL = 'https://www.supportivepillarorganisation.org/'
+export const GIRLS_FOUNDATION_OF_TANZANIA_URL = 'https://www.girlsfoundationoftanzania.org/'

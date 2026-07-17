@@ -4,12 +4,19 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Reveal } from '../ui/Reveal'
 import { Globe, type MapLocation } from '../ui/Globe'
+import {
+  EDU_POWER_YOUTH_FOUNDATION_URL,
+  HORIZON_INTERNATIONAL_URL,
+  SUPPORTIVE_PILLAR_ORGANISATION_URL,
+  GIRLS_FOUNDATION_OF_TANZANIA_URL,
+  EXTERNAL_LINK_PROPS,
+} from '../../constants/links'
 
 const partners = [
-  { country: 'South Sudan', devices: '2 deployed', org: 'Eta Power Youth Foundation' },
-  { country: 'South Africa', devices: '2 committed · Summer 2026', org: 'Future Horizons' },
-  { country: 'Malawi', devices: '2 committed · Summer 2026', org: 'Supportive Pillow Organization' },
-  { country: 'Tanzania', devices: '1 committed · Summer 2026', org: "Girls' Foundation of Tanzania" },
+  { country: 'South Sudan', devices: '2 deployed', org: 'Edu Power Youth Foundation', orgUrl: EDU_POWER_YOUTH_FOUNDATION_URL },
+  { country: 'South Africa', devices: '2 committed · Summer 2026', org: 'Horizon International', orgUrl: HORIZON_INTERNATIONAL_URL },
+  { country: 'Malawi', devices: '2 committed · Summer 2026', org: 'Supportive Pillar Organisation', orgUrl: SUPPORTIVE_PILLAR_ORGANISATION_URL },
+  { country: 'Tanzania', devices: '1 committed · Summer 2026', org: 'The Girls Foundation of Tanzania', orgUrl: GIRLS_FOUNDATION_OF_TANZANIA_URL },
 ]
 
 const countryCoordinates: Record<string, { lat: number; lng: number }> = {
@@ -78,7 +85,15 @@ export function WhereWeWorkSection() {
                           </span>
                         </div>
                         <p className="mt-1 text-13 md:text-16 text-night/60 group-hover:text-night/80 transition-colors">
-                          with {p.org}
+                          with{' '}
+                          <a
+                            href={p.orgUrl}
+                            {...EXTERNAL_LINK_PROPS}
+                            onClick={(e) => e.stopPropagation()}
+                            className="underline decoration-night/20 hover:decoration-current transition-colors"
+                          >
+                            {p.org}
+                          </a>
                         </p>
                       </div>
 
@@ -108,8 +123,7 @@ export function WhereWeWorkSection() {
         <Reveal delay={0.3}>
           <p className="mt-12 text-night/60 font-medium">
             Additional partners and relationships in{' '}
-            <span className="text-night">Pakistan, Bangladesh, Grenada, and Colombia</span> — with
-            more reaching out as awareness of DIDI grows.
+            <span className="text-night">Pakistan, Bangladesh, Grenada, and Colombia.</span>
           </p>
         </Reveal>
       </div>

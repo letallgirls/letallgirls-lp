@@ -4,7 +4,7 @@ const problemStats = [
   { value: '$160B', label: 'spent on education across Africa each year' },
   { value: '4%', label: 'of Sub-Saharan schools have basic internet' },
   { value: '60:1', label: 'student-to-teacher ratios in some regions' },
-  { value: '1 / 30', label: 'textbook to student ratio in some countries' },
+  { value: '1:30', label: 'textbook to student ratio in some countries' },
 ]
 
 export function ProblemSection() {
@@ -33,9 +33,10 @@ export function ProblemSection() {
         </div>
         <Reveal>
           <p className="max-w-3xl text-lg text-cloud-light/80 leading-[1.5] font-medium">
-            High-cost alternatives like Starlink run $600+ upfront and $200+/month — out of reach for
-            the schools that need them most. DIDI was built as the opposite: cheap, offline by design,
-            and built around the reality on the ground.
+            High-cost alternatives like Starlink are out of reach for the schools that need them
+            most, and even then, only provide connectivity. Schools still have to source resources
+            to build their educational hub on top. The DIDI was built as the opposite:
+            cost-effective, offline by design, and education-centric.
           </p>
         </Reveal>
       </div>

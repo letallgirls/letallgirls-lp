@@ -31,7 +31,7 @@ export function BeliefsSection() {
             <div className="mt-4 mb-6 min-h-[4rem] md:min-h-[5rem]">
               <GooeyText
                 texts={[
-                  "Talent is everywhere. Opportunity isn't — yet.",
+                  "Talent is everywhere. Opportunity isn't, yet.",
                   'Every girl should have a classroom.',
                   'Where you are born should not determine your potential.',
                   'The name is the mission.',
@@ -43,7 +43,7 @@ export function BeliefsSection() {
               />
             </div>
             <p className="text-lg text-night/70 font-medium leading-[1.5] mb-6">
-              LetAllGirls exists to close the opportunity gap — one device, one school, one subject at
+              LetAllGirls exists to close the opportunity gap, one device, one school, one subject at
               a time.
             </p>
             <div className="flex flex-wrap gap-4 mt-8">
