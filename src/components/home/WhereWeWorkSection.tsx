@@ -31,10 +31,18 @@ const mapLocations: MapLocation[] = partners.map(p => ({
   label: p.country,
   lat: countryCoordinates[p.country]?.lat || 0,
   lng: countryCoordinates[p.country]?.lng || 0,
+  org: p.org,
+  orgUrl: p.orgUrl,
 }))
 
 export function WhereWeWorkSection() {
-  const [activeCountry, setActiveCountry] = useState<string | null>(null)
+  // hoveredCountry: light preview (text/tint), reverts on mouse-leave.
+  // selectedCountry: click-only, persists — this is what drives the globe's
+  // zoom + floating info card. Selection wins over hover so a stray hover on
+  // another row can't yank the zoomed globe away from what's selected.
+  const [hoveredCountry, setHoveredCountry] = useState<string | null>(null)
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null)
+  const displayCountry = selectedCountry ?? hoveredCountry
 
   return (
     <section id="where-we-work" className="py-32 px-6 bg-brave-light border-y border-brave-primary/10">
@@ -55,13 +63,13 @@ export function WhereWeWorkSection() {
           <Reveal delay={0.1}>
             <ul className="grid grid-cols-2 md:grid-cols-1">
               {partners.map((p, i) => {
-                const isActive = activeCountry === p.country;
+                const isActive = displayCountry === p.country;
                 return (
                   <li key={p.country}>
                     <motion.div
-                      onHoverStart={() => setActiveCountry(p.country)}
-                      onHoverEnd={() => setActiveCountry(null)}
-                      onClick={() => setActiveCountry(isActive ? null : p.country)}
+                      onHoverStart={() => setHoveredCountry(p.country)}
+                      onHoverEnd={() => setHoveredCountry(null)}
+                      onClick={() => setSelectedCountry(selectedCountry === p.country ? null : p.country)}
                       className={`group relative h-full cursor-pointer p-5 md:-mx-4 md:px-4 md:py-6 border-brave-primary/10 transition-colors flex md:items-center md:justify-between gap-3 ${
                         i % 2 === 0 ? 'border-r' : ''
                       } ${i < partners.length - 2 ? 'border-b' : ''} md:border-0 md:border-t ${
@@ -116,7 +124,14 @@ export function WhereWeWorkSection() {
           </Reveal>
 
           <Reveal delay={0.2} className="relative w-full flex items-center justify-center">
-            <Globe locations={mapLocations} activeLocationId={activeCountry} />
+            <Globe
+              locations={mapLocations}
+              activeLocationId={displayCountry}
+              zoomedLocationId={displayCountry}
+              onCloseZoom={() => setSelectedCountry(null)}
+              onLocationClick={(id) => setSelectedCountry(prev => prev === id ? null : id)}
+              onLocationHover={(id) => setHoveredCountry(id)}
+            />
           </Reveal>
         </div>
 

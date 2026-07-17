@@ -10,6 +10,8 @@ export interface MapLocation {
   lng: number
   label?: string
   id?: string
+  org?: string
+  orgUrl?: string
 }
 
 // Africa is our focus — tinted stronger than the rest of the world's land.
@@ -26,6 +28,7 @@ const AFRICA = new Set([
 
 const AFRICA_CENTER: [number, number] = [20, 3] // [lng, lat]
 const SIZE = 400
+const ZOOM_SCALE = 1.7
 
 function usePrefersReducedMotion() {
   const [reduced, setReduced] = useState(false)
@@ -42,16 +45,27 @@ function usePrefersReducedMotion() {
 export function Globe({
   locations = [],
   activeLocationId = null,
+  zoomedLocationId = null,
+  onCloseZoom,
   className = 'w-full aspect-square max-w-[30rem] mx-auto',
   labelPosition = 'bottom',
 }: {
   locations?: MapLocation[]
   activeLocationId?: string | null
+  /** When set, the globe zooms in on this location and shows a floating info
+   *  card anchored to its marker. Distinct from `activeLocationId` so hover
+   *  can keep doing the light tint/center preview without triggering the
+   *  bigger zoom+card move — that's reserved for a deliberate selection. */
+  zoomedLocationId?: string | null
+  onCloseZoom?: () => void
+  onLocationClick?: (id: string) => void
+  onLocationHover?: (id: string | null) => void
   className?: string
   labelPosition?: 'bottom' | 'top'
 }) {
   const [geographies, setGeographies] = useState<any[]>([])
   const [rotation, setRotation] = useState<[number, number]>([-AFRICA_CENTER[0], -AFRICA_CENTER[1]])
+  const [zoom, setZoom] = useState(1)
   const [hovered, setHovered] = useState(false)
   const [inView, setInView] = useState(true)
   const wrapRef = useRef<HTMLDivElement>(null)
@@ -61,6 +75,10 @@ export function Globe({
   const activeLoc = useMemo(
     () => locations.find((l) => (l.id || l.label) === activeLocationId) || null,
     [locations, activeLocationId],
+  )
+  const zoomedLoc = useMemo(
+    () => locations.find((l) => (l.id || l.label) === zoomedLocationId) || null,
+    [locations, zoomedLocationId],
   )
 
   useEffect(() => {
@@ -91,9 +109,15 @@ export function Globe({
     return () => io.disconnect()
   }, [])
 
-  // Animation loop: auto-spin when idle, ease to the active country on hover.
+  // Animation loop: eases toward the active country (or Africa on hover),
+  // plus a zoom level toward the selected/zoomed country. Freezes entirely
+  // (skips the state update, so no re-render/path-regen happens) once
+  // nothing is active, hovered, or mid-zoom-transition — there's no idle
+  // auto-spin, so the globe only costs anything while something's moving.
   const rot = useRef(rotation)
   rot.current = rotation
+  const zoomRef = useRef(zoom)
+  zoomRef.current = zoom
   useEffect(() => {
     if (!inView) return
     let raf = 0
@@ -102,8 +126,13 @@ export function Globe({
     const tick = (now: number) => {
       raf = requestAnimationFrame(tick)
       if (now - last < FRAME) return
-      const dt = Math.min(now - last, 60)
       last = now
+
+      const zoomTarget = zoomedLoc ? ZOOM_SCALE : 1
+      const zoomSettled = Math.abs(zoomRef.current - zoomTarget) < 0.001
+      const rotationActive = !!activeLoc || hovered || reduced
+      if (!rotationActive && zoomSettled) return // fully idle — do nothing
+
       let [lam, phi] = rot.current
 
       if (activeLoc) {
@@ -118,32 +147,41 @@ export function Globe({
         while (dl < -180) dl += 360
         lam += dl * 0.08
         phi += (-AFRICA_CENTER[1] - phi) * 0.08
-      } else {
-        lam -= dt * 0.008 // gentle spin ~8°/s
-        phi += (-8 - phi) * 0.05
       }
 
       if (lam > 180) lam -= 360
       else if (lam < -180) lam += 360
 
+      const z = zoomRef.current + (zoomTarget - zoomRef.current) * 0.08
+      setZoom(z)
+
       setRotation([lam, phi])
     }
     raf = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(raf)
-  }, [activeLoc, reduced, hovered, inView])
+  }, [activeLoc, zoomedLoc, reduced, hovered, inView])
 
   const projection = useMemo(
     () =>
       geoOrthographic()
         .translate([SIZE / 2, SIZE / 2])
-        .scale(SIZE / 2 - 6)
+        .scale((SIZE / 2 - 6) * zoom)
         .rotate([rotation[0], rotation[1]])
         .clipAngle(90),
-    [rotation],
+    [rotation, zoom],
   )
   const path = useMemo(() => geoPath(projection), [projection])
   const graticule = useMemo(() => geoGraticule().step([20, 20])(), [])
   const center: [number, number] = [-rotation[0], -rotation[1]]
+
+  // Where the zoomed-in marker actually lands on screen, so the floating
+  // card can anchor to it. Null while off-screen (shouldn't normally happen
+  // since we rotate to center it) or before the marker has a location.
+  const zoomedMarkerPos = useMemo(() => {
+    if (!zoomedLoc) return null
+    if (geoDistance([zoomedLoc.lng, zoomedLoc.lat], center) > Math.PI / 2 - 0.02) return null
+    return projection([zoomedLoc.lng, zoomedLoc.lat])
+  }, [zoomedLoc, projection, center])
 
   // Precomputed once per data load (not per frame) — lets the render loop skip
   // running the path generator on countries that are fully back-facing, which
@@ -166,7 +204,7 @@ export function Globe({
 
       <svg
         viewBox={`0 0 ${SIZE} ${SIZE}`}
-        className="relative w-full h-full select-none drop-shadow-[0_25px_35px_rgba(36,36,126,0.18)]"
+        className="relative w-full h-full select-none rounded-[2.5rem] drop-shadow-[0_25px_35px_rgba(36,36,126,0.18)]"
         preserveAspectRatio="xMidYMid meet"
       >
         <defs>
@@ -203,7 +241,13 @@ export function Globe({
               fill={fill}
               stroke="#fbf8fa"
               strokeWidth={0.4}
-              className="transition-[fill] duration-300"
+              className={`transition-[fill] duration-300 ${isPartner ? 'cursor-pointer' : ''}`}
+              onMouseDown={() => {
+                if (isPartner && name && onLocationClick) onLocationClick(name)
+              }}
+              onTouchStart={() => {
+                if (isPartner && name && onLocationClick) onLocationClick(name)
+              }}
             />
           )
         })}
@@ -219,7 +263,19 @@ export function Globe({
           const id = loc.id || loc.label || null
           const isActive = id === activeLocationId
           return (
-            <g key={id} transform={`translate(${p[0]}, ${p[1]})`}>
+            <g
+              key={id}
+              transform={`translate(${p[0]}, ${p[1]})`}
+              className="cursor-pointer"
+              onMouseDown={() => {
+                if (id && onLocationClick) onLocationClick(id)
+              }}
+              onTouchStart={() => {
+                if (id && onLocationClick) onLocationClick(id)
+              }}
+            >
+              {/* invisible large hit area for easier clicking */}
+              <circle r={20} fill="transparent" style={{ pointerEvents: 'all' }} />
               {isActive && (
                 <circle r={8} fill="#8eebfc" fillOpacity={0.45} className="animate-marker-pulse" />
               )}
@@ -232,12 +288,53 @@ export function Globe({
             </g>
           )
         })}
+
+        {/* floating info card for the zoomed/selected country — anchored to
+            its marker via foreignObject, so it tracks the same projection
+            math as the dot itself (rotation + zoom) for free. Partner org
+            name + link only for now; a photo slot can slot in here later. */}
+        {zoomedLoc && zoomedMarkerPos && (
+          <foreignObject
+            x={Math.min(Math.max(zoomedMarkerPos[0] - 64, 4), SIZE - 128)}
+            y={Math.max(zoomedMarkerPos[1] - 92, 4)}
+            width={128}
+            height={68}
+          >
+            <div
+              {...{ xmlns: 'http://www.w3.org/1999/xhtml' }}
+              className="relative rounded-[24px] bg-night text-cloud-light shadow-xl px-4 py-3"
+            >
+              {onCloseZoom && (
+                <button
+                  type="button"
+                  onClick={onCloseZoom}
+                  aria-label="Close"
+                  className="absolute top-2 right-3 text-cloud-light/50 hover:text-cloud-light text-[11px] leading-none"
+                >
+                  ×
+                </button>
+              )}
+              <p className="text-[10px] font-semibold pr-3">{zoomedLoc.label}</p>
+              {zoomedLoc.orgUrl && (
+                <a
+                  href={zoomedLoc.orgUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-0.5 block text-[9px] text-skyward-accent underline decoration-skyward-accent/40"
+                >
+                  {zoomedLoc.org}
+                </a>
+              )}
+            </div>
+          </foreignObject>
+        )}
       </svg>
 
-      {/* active-country label */}
+      {/* active-country label — suppressed while the floating card is
+          showing the same name, so they don't both appear at once */}
       <div
         className={`pointer-events-none absolute ${labelPosition === 'top' ? 'top-4' : 'bottom-2'} left-1/2 -translate-x-1/2 rounded-xl bg-night px-4 py-2 text-13 font-semibold text-cloud-light shadow-xl transition-all duration-300 ${
-          activeLoc ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
+          activeLoc && !zoomedLoc ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
         }`}
       >
         {activeLoc?.label}
