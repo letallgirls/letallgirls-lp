@@ -3,18 +3,57 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#3a51aa" />
+
+    <!-- Site-level defaults for non-JS social scrapers (they read this static
+         HTML). Per-page routes set their own title/description/canonical/og via
+         the <Seo> component (React 19 metadata hoisting). Canonical and og:url
+         are intentionally NOT set here — they're inherently per-page, and a
+         static homepage value would conflict with React's per-route one. -->
+    <title>LetAllGirls | Offline AI classrooms for schools without internet</title>
     <meta
       name="description"
-      content="LetAllGirls is dedicated to breaking down barriers to quality education, promoting gender equality, and supporting youth in developing countries."
+      content="LetAllGirls builds DIDI, an offline AI-powered learning device that brings a personal tutor, digital library, and teacher tools to schools without reliable internet."
     />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="LetAllGirls" />
+    <meta property="og:title" content="LetAllGirls | Offline AI classrooms for schools without internet" />
+    <meta
+      property="og:description"
+      content="LetAllGirls builds DIDI, an offline AI-powered learning device that brings a personal tutor, digital library, and teacher tools to schools without reliable internet."
+    />
+    <meta property="og:image" content="https://letallgirls.org/og-image.jpg" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="LetAllGirls | Offline AI classrooms for schools without internet" />
+    <meta
+      name="twitter:description"
+      content="LetAllGirls builds DIDI, an offline AI-powered learning device that brings a personal tutor, digital library, and teacher tools to schools without reliable internet."
+    />
+    <meta name="twitter:image" content="https://letallgirls.org/og-image.jpg" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "NGO",
+        "name": "LetAllGirls",
+        "url": "https://letallgirls.org/",
+        "logo": "https://letallgirls.org/favicon.png",
+        "description": "LetAllGirls is a 501(c)(3) nonprofit building DIDI, an offline AI-powered learning device that brings a personal tutor, digital library, and teacher tools to schools without reliable internet.",
+        "sameAs": ["https://www.instagram.com/letallgirls/"]
+      }
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
-    <title>LetAllGirls - Education and empowerment for women in South Sudan</title>
   </head>
   <body>
     <div id="root"></div>

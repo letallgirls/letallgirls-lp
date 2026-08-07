@@ -1,0 +1,21 @@
+{
+  "name": "LetAllGirls",
+  "short_name": "LetAllGirls",
+  "description": "Offline AI-powered classrooms for schools without reliable internet.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fbf8fa",
+  "theme_color": "#3a51aa",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "600x600",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

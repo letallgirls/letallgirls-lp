@@ -1,3 +1,4 @@
+import { Seo } from '../components/Seo'
 import { ContactHero } from '../components/contact/ContactHero'
 import { ContactMethods } from '../components/contact/ContactMethods'
 // The full contact form (ContactForm.tsx) and the dark-card contact details
@@ -8,6 +9,11 @@ import { ContactMethods } from '../components/contact/ContactMethods'
 export function Contact() {
   return (
     <>
+      <Seo
+        title="Contact | LetAllGirls"
+        description="Get in touch with LetAllGirls to sponsor a device, bring DIDI to your school, explore partnerships, or learn more about our work."
+        path="/contact"
+      />
       <ContactHero />
       <ContactMethods />
     </>
