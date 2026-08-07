@@ -47,6 +47,7 @@ export function Globe({
   activeLocationId = null,
   zoomedLocationId = null,
   onCloseZoom,
+  onLocationClick,
   className = 'w-full aspect-square max-w-[30rem] mx-auto',
   labelPosition = 'bottom',
 }: {
@@ -66,7 +67,6 @@ export function Globe({
   const [geographies, setGeographies] = useState<any[]>([])
   const [rotation, setRotation] = useState<[number, number]>([-AFRICA_CENTER[0], -AFRICA_CENTER[1]])
   const [zoom, setZoom] = useState(1)
-  const [hovered, setHovered] = useState(false)
   const [inView, setInView] = useState(true)
   const wrapRef = useRef<HTMLDivElement>(null)
   const reduced = usePrefersReducedMotion()
@@ -109,11 +109,11 @@ export function Globe({
     return () => io.disconnect()
   }, [])
 
-  // Animation loop: eases toward the active country (or Africa on hover),
-  // plus a zoom level toward the selected/zoomed country. Freezes entirely
-  // (skips the state update, so no re-render/path-regen happens) once
-  // nothing is active, hovered, or mid-zoom-transition — there's no idle
-  // auto-spin, so the globe only costs anything while something's moving.
+  // Animation loop: eases the rotation toward its target — the active country,
+  // or the Africa "home" view when nothing is selected — and the zoom toward
+  // its target, then freezes once both have settled. An idle globe costs
+  // nothing (no auto-spin), but it always eases back to the home position after
+  // a selection clears rather than freezing wherever it happened to stop.
   const rot = useRef(rotation)
   rot.current = rotation
   const zoomRef = useRef(zoom)
@@ -128,38 +128,34 @@ export function Globe({
       if (now - last < FRAME) return
       last = now
 
+      const targetLng = activeLoc ? -activeLoc.lng : -AFRICA_CENTER[0]
+      const targetPhi = activeLoc ? -activeLoc.lat : -AFRICA_CENTER[1]
       const zoomTarget = zoomedLoc ? ZOOM_SCALE : 1
-      const zoomSettled = Math.abs(zoomRef.current - zoomTarget) < 0.001
-      const rotationActive = !!activeLoc || hovered || reduced
-      if (!rotationActive && zoomSettled) return // fully idle — do nothing
 
       let [lam, phi] = rot.current
+      let dl = targetLng - lam
+      while (dl > 180) dl -= 360
+      while (dl < -180) dl += 360
 
-      if (activeLoc) {
-        let dl = -activeLoc.lng - lam
-        while (dl > 180) dl -= 360
-        while (dl < -180) dl += 360
-        lam += dl * 0.1
-        phi += (-activeLoc.lat - phi) * 0.1
-      } else if (hovered || reduced) {
-        let dl = -AFRICA_CENTER[0] - lam
-        while (dl > 180) dl -= 360
-        while (dl < -180) dl += 360
-        lam += dl * 0.08
-        phi += (-AFRICA_CENTER[1] - phi) * 0.08
-      }
+      const rotSettled = Math.abs(dl) < 0.04 && Math.abs(targetPhi - phi) < 0.04
+      const zoomSettled = Math.abs(zoomRef.current - zoomTarget) < 0.001
+      if (rotSettled && zoomSettled) return // settled at target — freeze
+
+      // reduced-motion: snap instead of easing.
+      const ease = reduced ? 1 : activeLoc ? 0.1 : 0.08
+      lam += dl * ease
+      phi += (targetPhi - phi) * ease
 
       if (lam > 180) lam -= 360
       else if (lam < -180) lam += 360
 
-      const z = zoomRef.current + (zoomTarget - zoomRef.current) * 0.08
+      const z = reduced ? zoomTarget : zoomRef.current + (zoomTarget - zoomRef.current) * 0.08
       setZoom(z)
-
       setRotation([lam, phi])
     }
     raf = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(raf)
-  }, [activeLoc, zoomedLoc, reduced, hovered, inView])
+  }, [activeLoc, zoomedLoc, reduced, inView])
 
   const projection = useMemo(
     () =>
@@ -196,8 +192,6 @@ export function Globe({
     <div
       ref={wrapRef}
       className={`relative ${className}`}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
     >
       {/* soft glow behind the sphere */}
       <div className="pointer-events-none absolute inset-[8%] rounded-full bg-skyward-accent/20 blur-3xl" />
